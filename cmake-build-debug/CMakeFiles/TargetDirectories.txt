@@ -1,0 +1,4 @@
+E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/visualime.dir
+E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/unit_tests.dir
+E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/edit_cache.dir
+E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/rebuild_cache.dir
