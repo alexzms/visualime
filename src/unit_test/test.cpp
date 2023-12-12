@@ -15,15 +15,14 @@ glm::vec3 random_color() {
 int main() {
     std::cout << "Hello, World from Visualime!" << std::endl;
 
-    visualime::test_scene2d test_scene(800, 800, 2.0, false);
+    visualime::test_scene2d test_scene(800, 800, 1.0, false);
     test_scene.add_circle();
     test_scene.launch();
 
-    double x, y, r;
-    while (std::cin >> x >> y >> r) {
-        test_scene.add_circle(random_color(), {x, y, 0}, r);
+    double x, y, z, r;
+    while (std::cin >> x >> y >> z >> r) {
+        test_scene.add_circle(random_color(), {x, y, z}, r);
     }
-
 
     if (test_scene.get_run_thread().joinable()) {
         test_scene.get_run_thread().join();

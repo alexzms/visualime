@@ -151,3 +151,103 @@ events:
         
       exitCode: 0
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/JetBrains/CLion 2023.2/bin/cmake/win/x64/share/cmake-3.26/Modules/FindOpenMP.cmake:219 (try_compile)"
+      - "C:/Program Files/JetBrains/CLion 2023.2/bin/cmake/win/x64/share/cmake-3.26/Modules/FindOpenMP.cmake:483 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:6 (find_package)"
+    description: "Detecting C OpenMP compiler info"
+    directories:
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-q9fhxr"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-q9fhxr"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_C_openmp"
+      cached: true
+      stdout: |
+        Change Dir: E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-q9fhxr
+        
+        Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe -v cmTC_46095 && [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -openmp /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_46095.dir\\OpenMPTryFlag.c.obj /FdCMakeFiles\\cmTC_46095.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-q9fhxr\\OpenMPTryFlag.c
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_46095.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_46095.dir\\OpenMPTryFlag.c.obj  /out:cmTC_46095.exe /implib:cmTC_46095.lib /pdb:cmTC_46095.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/JetBrains/CLion 2023.2/bin/cmake/win/x64/share/cmake-3.26/Modules/FindOpenMP.cmake:219 (try_compile)"
+      - "C:/Program Files/JetBrains/CLion 2023.2/bin/cmake/win/x64/share/cmake-3.26/Modules/FindOpenMP.cmake:483 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:6 (find_package)"
+    description: "Detecting CXX OpenMP compiler info"
+    directories:
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-gzssqc"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-gzssqc"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_CXX_openmp"
+      cached: true
+      stdout: |
+        Change Dir: E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-gzssqc
+        
+        Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe -v cmTC_0aa67 && [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc -openmp /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_0aa67.dir\\OpenMPTryFlag.cpp.obj /FdCMakeFiles\\cmTC_0aa67.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-gzssqc\\OpenMPTryFlag.cpp
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_0aa67.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_0aa67.dir\\OpenMPTryFlag.cpp.obj  /out:cmTC_0aa67.exe /implib:cmTC_0aa67.lib /pdb:cmTC_0aa67.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/JetBrains/CLion 2023.2/bin/cmake/win/x64/share/cmake-3.26/Modules/FindOpenMP.cmake:419 (try_compile)"
+      - "C:/Program Files/JetBrains/CLion 2023.2/bin/cmake/win/x64/share/cmake-3.26/Modules/FindOpenMP.cmake:557 (_OPENMP_GET_SPEC_DATE)"
+      - "CMakeLists.txt:6 (find_package)"
+    description: "Detecting C OpenMP version"
+    directories:
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-q6tmqp"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-q6tmqp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "OpenMP_SPECTEST_C_"
+      cached: true
+      stdout: |
+        Change Dir: E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-q6tmqp
+        
+        Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe -v cmTC_21a88 && [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -openmp /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_21a88.dir\\OpenMPCheckVersion.c.obj /FdCMakeFiles\\cmTC_21a88.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-q6tmqp\\OpenMPCheckVersion.c
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_21a88.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_21a88.dir\\OpenMPCheckVersion.c.obj  /out:cmTC_21a88.exe /implib:cmTC_21a88.lib /pdb:cmTC_21a88.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/JetBrains/CLion 2023.2/bin/cmake/win/x64/share/cmake-3.26/Modules/FindOpenMP.cmake:419 (try_compile)"
+      - "C:/Program Files/JetBrains/CLion 2023.2/bin/cmake/win/x64/share/cmake-3.26/Modules/FindOpenMP.cmake:557 (_OPENMP_GET_SPEC_DATE)"
+      - "CMakeLists.txt:6 (find_package)"
+    description: "Detecting CXX OpenMP version"
+    directories:
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-6fhgfi"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-6fhgfi"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "OpenMP_SPECTEST_CXX_"
+      cached: true
+      stdout: |
+        Change Dir: E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-6fhgfi
+        
+        Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe -v cmTC_d3e8b && [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc -openmp /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_d3e8b.dir\\OpenMPCheckVersion.cpp.obj /FdCMakeFiles\\cmTC_d3e8b.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-6fhgfi\\OpenMPCheckVersion.cpp
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_d3e8b.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_d3e8b.dir\\OpenMPCheckVersion.cpp.obj  /out:cmTC_d3e8b.exe /implib:cmTC_d3e8b.lib /pdb:cmTC_d3e8b.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        
+      exitCode: 0
+...

@@ -13,7 +13,8 @@ namespace visualime::primitive {
     class primitive_base {
     public:
         virtual ~primitive_base() = default;
-        [[nodiscard]] virtual glm::vec3 should_show(double width, double height) = 0;
+        [[nodiscard]] virtual glm::vec3 show_color(double width, double height) const = 0;
+        [[nodiscard]] virtual float get_depth(double width, double height) const = 0;
     };
 
     class solid_circle: public primitive_base {
@@ -25,19 +26,30 @@ namespace visualime::primitive {
                      _position(std::move(position)),
                      _material(std::make_shared<material::solid_color>(color)),
                      _radius(radius) {}
-        [[nodiscard]] glm::vec3 should_show(double width, double height) override {
-            glm::vec2 center = {_position.x, _position.y};
-            auto distance = glm::distance(center, {width, height});
-            if (distance < _radius) {                            // inside circle
-                return _material->get_color(0, 0);
+        [[nodiscard]] glm::vec3 show_color(double width, double height) const override {
+            if (should_show(width, height)) {
+                return _material->get_color(width, height);
             }
             return {0, 0, 0};
+        }
+        [[nodiscard]] float get_depth(double width, double height) const override {
+            if (should_show(width, height)) {
+                return _position.z;
+            } else {
+                return 0;
+            }
         }
 
     private:
         glm::vec3 _position;                                    // position is vec3 for overlapping
         std::shared_ptr<material::material_base> _material;
         double _radius;
+
+        [[nodiscard]] bool should_show(double width, double height) const {
+            glm::vec2 center = {_position.x, _position.y};
+            auto distance = glm::distance(center, {width, height});
+            return distance < _radius;
+        }
     };
 }
 
