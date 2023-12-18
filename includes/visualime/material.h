@@ -11,13 +11,13 @@ namespace visualime::material {
     class material_base {
     public:
         virtual ~material_base() = default;
-        [[nodiscard]] virtual glm::vec3 get_color(double u, double v) const = 0;
+        [[nodiscard]] virtual glm::vec3 get_color(const glm::vec2& uv) const = 0;
     };
 
     class solid_color : public material_base {
     public:
         explicit solid_color(glm::vec3 color): _color(color) {}
-        [[nodiscard]] glm::vec3 get_color(double u, double v) const override { return _color; }
+        [[nodiscard]] glm::vec3 get_color(const glm::vec2& uv) const override { return _color; }
     private:
         glm::vec3 _color;
     };

@@ -1,16 +1,25 @@
-# Visualime - A Simple 2D Visualization Library for C++
+# Visualime - A Simple Online 2D Visualization Library for C++
+
+## Feature
+Online-rendering: You can modify primitives outside of the rendering loop,
+and the primitives will be rendered in the next frame, this is particularly
+useful for my Fluid-Engine-Dev project(For more, check out [here](
+https://github.com/alexzms/learn_fluid)).
 
 ## Done
 - [x] Circle primitive
+- [x] Rectangle primitive
+- [x] Primitive rotation
+- [x] Primitive translation
 - [x] OpenGL rendering
 - [x] Depth buffer
 - [x] OpenMP parallelization
+- [x] Primitive-based rendering(small optimization)
 
 ## TODO
-- [ ] *Box primitive
 - [ ] Triangle primitive
-- [ ] Triangle mesh primitive
-- [ ] *CUDA parallelization
+- [ ] Canvas System(Easily draw pixels directly on the screen)
+- [ ] *CUDA parallelization(big optimization)
 
 (*) means it's highly wanted.
 
@@ -58,7 +67,7 @@ glm::vec3 random_color() {
 int main() {
     std::cout << "Hello, World from Visualime!" << std::endl;
 
-    visualime::test_scene2d test_scene(800, 800, 1.0, false);
+    visualime::scene2d test_scene(800, 800, 1.0, false);
     test_scene.add_circle();
     test_scene.launch();
 
@@ -77,4 +86,13 @@ int main() {
 This can be found in `src/unit_test/test.cpp`.
 
 ## Showcase
+### Visualime Basics
 ![image](screenshots/basic_done.jpg)
+![image](screenshots/rectangle.jpg)
+![image](screenshots/rotation.jpg)
+### Fluid-Engine-Dev
+#### Double Pendulum
+[video link](https://www.bilibili.com/video/BV1bC4y1Q7Dz)
+![image](screenshots/double_pendulum.jpg)
+![image](screenshots/two_pendulum.jpg)
+

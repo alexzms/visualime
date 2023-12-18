@@ -17,7 +17,9 @@ add_library(visualime src/library.cpp src/glad.c
         includes/visualime/material.h
         includes/visualime/engine.h
         includes/visualime/opengl_wrapper.h
-        includes/visualime/Shader.h)
+        includes/visualime/Shader.h
+        includes/visualime/math_utils.h
+        includes/visualime/visualime.h)
 
 add_executable(unit_tests src/unit_test/test.cpp src/glad.c)
 target_link_libraries(unit_tests PUBLIC glfw3.dll opengl32.lib)

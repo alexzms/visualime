@@ -63,7 +63,6 @@ namespace visualime::opengl_wrapper {
             };
         }
         ~simple_opengl_wrapper() {
-            std::cout << "[wrapper]Destroying simple_opengl_wrapper" << std::endl;
             delete[] _vertices;
             delete[] _indices;
             delete[] _data;
@@ -97,6 +96,7 @@ namespace visualime::opengl_wrapper {
             glfwSetWindowUserPointer(_window, this);
             glfwSetCursorPosCallback(_window, static_mouse_callback);
             glfwSetScrollCallback(_window, static_scroll_callback);
+            glfwSetMouseButtonCallback(_window, static_mouse_button_callback);
             if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
                 std::cout << "[wrapper]Failed to initialize GLAD" << std::endl;
                 exit(-1);
@@ -145,6 +145,7 @@ namespace visualime::opengl_wrapper {
                 glfwDestroyWindow(_window);
                 glfwTerminate();
                 initialized = false;
+                std::cout << "[wrapper]Destroying simple_opengl_wrapper" << std::endl;
             }
         }
 
@@ -168,6 +169,26 @@ namespace visualime::opengl_wrapper {
 
             glBindTexture(GL_TEXTURE_2D, 0);
             glBindVertexArray(0);
+        }
+
+        bool get_left_mouse_click(glm::vec2& pos) {
+            if (!initialized) { std::cout << "[wrapper][call get_left_mouse_click()]OpenGL not initialized" << std::endl; return false;}
+            if (_left_click_positions.empty())
+                return false;
+
+            pos = _left_click_positions.front();
+            _left_click_positions.pop_front();
+            return true;
+        }
+
+        bool get_right_mouse_click(glm::vec2& pos) {
+            if (!initialized) { std::cout << "[wrapper][call get_right_mouse_click()]OpenGL not initialized" << std::endl; return false;}
+            if (_right_click_positions.empty())
+                return false;
+
+            pos = _right_click_positions.front();
+            _right_click_positions.pop_front();
+            return true;
         }
 
         void swap_buffers() {
@@ -200,13 +221,31 @@ namespace visualime::opengl_wrapper {
         GLuint VAO{}, VBO{}, EBO{}, texture{};
         GLFWwindow* _window{};
         double last_width{}, last_height{}, scroll_offset{};
+        std::list<glm::vec2> _left_click_positions, _right_click_positions;
         bool initialized = false;
+
+        std::function<void(GLFWwindow *window, int button, int action, int mods)> mouse_button_callback =
+                [this](GLFWwindow *window, int button, int action, int mods) {
+                    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+                        double x, y;
+                        glfwGetCursorPos(window, &x, &y);
+//                        std::cout << "[wrapper]Mouse left click position: " << x << ", " << y << std::endl;
+                        _left_click_positions.emplace_back(x, y);              // this looks like magic, but it works
+                    }
+                    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+                        double x, y;
+                        glfwGetCursorPos(window, &x, &y);
+//                        std::cout << "[wrapper]Mouse right click position: " << x << ", " << y << std::endl;
+                        _right_click_positions.emplace_back(x, y);             // this looks like magic, but it works
+                    }
+                };
 
         std::function<void(GLFWwindow *window, double x, double y)> mouse_callback =
                 [this](GLFWwindow *window, double x, double y) {
                     // get mouse position and write to lastX and lastY
                     last_width = x;
                     last_height = y;
+//                    std::cout << "[wrapper]Mouse position: " << x << ", " << y << std::endl;
                 };
         std::function<void(GLFWwindow *window, double x, double y)> scroll_callback =
                 [this](GLFWwindow *window, double x, double y) {
@@ -226,6 +265,11 @@ namespace visualime::opengl_wrapper {
         static void static_scroll_callback(GLFWwindow *window, double x, double y) {
             auto *wrapper = static_cast<simple_opengl_wrapper*>(glfwGetWindowUserPointer(window));
             wrapper->scroll_callback(window, x, y);
+        }
+
+        static void static_mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
+            auto *wrapper = static_cast<simple_opengl_wrapper*>(glfwGetWindowUserPointer(window));
+            wrapper->mouse_button_callback(window, button, action, mods);
         }
     };
 }

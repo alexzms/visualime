@@ -1,4 +1,4 @@
-#include "../includes/visualime/library.h"
+#include "../includes/visualime/scenes.h"
 
 #include "iostream"
 #include "thread"

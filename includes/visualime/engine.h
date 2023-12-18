@@ -9,6 +9,7 @@
 #include "primitives.h"
 #include "opengl_wrapper.h"
 #include "vector"
+#include "math_utils.h"
 #include "omp.h"
 
 namespace visualime::engine {
@@ -37,30 +38,33 @@ namespace visualime::engine {
 
         void render(std::vector<std::shared_ptr<primitive::primitive_base>> primitives) override {
             memset(_data_buffer, 0, _width * _height * 3 * sizeof(unsigned char));
-            memset(_depth, 0, _width * _height * sizeof(float));
-            // openmp
+            memset(_depth, 0, _width * _height * sizeof(float));        // first write as black
+            math_utils::interval render_border{0, 1};
             #pragma omp parallel for
-            for (int i = 0; i < _height; ++i) {
-                for (int j = 0; j != _width; ++j) {
-                    glm::vec3 color = {0, 0, 0};
-                    unsigned offset = i * _width + j;
-                    bool update = false;
-                    for (auto& primitive: primitives) {
-                        glm::vec3 temp_color = primitive->show_color(j / static_cast<double>(_width),
-                                                                     i / static_cast<double>(_height));
-                        float depth = primitive->get_depth(
-                                j / static_cast<double>(_width),
-                                i / static_cast<double>(_height));
+            for (int i = 0; i < primitives.size(); ++i) {
+                auto primitive = primitives[i];
+                if (primitive == nullptr)                                             // deleted primitvie
+                    continue;
+                auto bounding_box = primitive->get_aabb().clamped(render_border);
+                if (bounding_box.is_empty())
+                    continue;                                // if empty, skip this
+                for (int i = (int)ceil(bounding_box.y_inter.min * _height);        // ceil to avoid missing pixels
+                     i < bounding_box.y_inter.max * _height;
+                     ++i) {
+                    for (int j = (int)ceil(bounding_box.x_inter.min * _width);
+                         j < bounding_box.x_inter.max * _width;
+                         ++j) {
+
+                        glm::vec2 point = {j / static_cast<double>(_width), i / static_cast<double>(_height)};
+                        glm::vec3 color = primitive->show_color(point);
+                        auto depth = (float)primitive->get_depth(point);
+                        unsigned offset = i * _width + j;
                         if (depth > _depth[offset]) {
                             _depth[offset] = depth;
-                            color = temp_color;
-                            update = true;
+                            _data_buffer[offset * 3] = static_cast<unsigned char>(color.r);
+                            _data_buffer[offset * 3 + 1] = static_cast<unsigned char>(color.g);
+                            _data_buffer[offset * 3 + 2] = static_cast<unsigned char>(color.b);
                         }
-                    }
-                    if (update) {
-                        _data_buffer[offset * 3] = static_cast<unsigned char>(color.r);
-                        _data_buffer[offset * 3 + 1] = static_cast<unsigned char>(color.g);
-                        _data_buffer[offset * 3 + 2] = static_cast<unsigned char>(color.b);
                     }
                 }
             }
@@ -68,6 +72,40 @@ namespace visualime::engine {
             _data = _data_buffer;
             _data_buffer = tmp;
         }
+
+//        void render_for_pixels(std::vector<std::shared_ptr<primitive::primitive_base>> primitives) override {
+//            memset(_data_buffer, 0, _width * _height * 3 * sizeof(unsigned char));
+//            memset(_depth, 0, _width * _height * sizeof(float));
+//            // openmp
+//            #pragma omp parallel for
+//            for (int i = 0; i < _height; ++i) {
+//                for (int j = 0; j != _width; ++j) {
+//                    glm::vec3 color = {0, 0, 0};
+//                    unsigned offset = i * _width + j;
+//                    bool update = false;
+//                    for (auto& primitive: primitives) {
+//                        glm::vec3 temp_color = primitive->show_color(j / static_cast<double>(_width),
+//                                                                     i / static_cast<double>(_height));
+//                        float depth = primitive->get_depth(
+//                                j / static_cast<double>(_width),
+//                                i / static_cast<double>(_height));
+//                        if (depth > _depth[offset]) {
+//                            _depth[offset] = depth;
+//                            color = temp_color;
+//                            update = true;
+//                        }
+//                    }
+//                    if (update) {
+//                        _data_buffer[offset * 3] = static_cast<unsigned char>(color.r);
+//                        _data_buffer[offset * 3 + 1] = static_cast<unsigned char>(color.g);
+//                        _data_buffer[offset * 3 + 2] = static_cast<unsigned char>(color.b);
+//                    }
+//                }
+//            }
+//            auto tmp = _data;                               // swap buffer
+//            _data = _data_buffer;
+//            _data_buffer = tmp;
+//        }
 
         [[nodiscard]] unsigned int get_width() const { return _width; }
         [[nodiscard]] unsigned int get_height() const { return _height; }
