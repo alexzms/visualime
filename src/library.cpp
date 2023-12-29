@@ -3,6 +3,7 @@
 #include "iostream"
 #include "thread"
 
+#define USE_CUDA
 
 namespace visualime {
 

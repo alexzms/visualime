@@ -16,30 +16,27 @@ namespace visualime::primitive {                              // !!!all the coor
     public:
         virtual ~primitive_base() = default;
 
-        [[nodiscard]] virtual glm::vec3 show_color(const glm::vec2& point) const = 0;
-        [[nodiscard]] virtual double get_depth(const glm::vec2& point) const = 0;
-        [[nodiscard]] virtual math_utils::aabb get_aabb() const = 0;
-        [[nodiscard]] virtual bool is_deleted() const { return true; }
+        [[nodiscard]] virtual glm::vec<3, unsigned char> show_color(const glm::vec2& point) const = 0;
+
         virtual bool set_position(const glm::vec2& position) { return false; }
         virtual bool set_rotation(double angle) { return false; }         // !!!radian!!!
+
+        [[nodiscard]] virtual double           get_depth(const glm::vec2& point) const = 0;
+        [[nodiscard]] virtual math_utils::aabb get_aabb() const = 0;
+        [[nodiscard]] virtual glm::vec2        get_position() const = 0;
+        [[nodiscard]] virtual double           get_rotation() const = 0;
     };
 
-    class deleted_primitive: public primitive_base {
-    public:
-        [[nodiscard]] glm::vec3 show_color(const glm::vec2& point) const override { return {0, 0, 0}; }
-        [[nodiscard]] double get_depth(const glm::vec2& point) const override { return 0; }
-        [[nodiscard]] math_utils::aabb get_aabb() const override { return math_utils::aabb{}; }
-        [[nodiscard]] bool is_deleted() const override { return true; }
-    };
 
     class solid_circle: public primitive_base {
     public:
-        solid_circle(const glm::vec2& position, double depth, double radius, const glm::vec3& color): _depth(depth),
+        solid_circle(const glm::vec2& position, double depth, double radius, const glm::vec<3, unsigned char>& color):
+             _depth(depth),
              _position(position), _material(std::make_shared<material::solid_color>(color)), _radius(radius),
              bounding_box(math_utils::interval{position.x - radius, position.x + radius},
                           math_utils::interval{position.y - radius, position.y + radius})
              {}
-        [[nodiscard]] glm::vec3 show_color(const glm::vec2& point) const override {
+        [[nodiscard]] glm::vec<3, unsigned char> show_color(const glm::vec2& point) const override {
             if (!bounding_box.contains(point))
                 return {0, 0, 0};
             if (!should_show(point))
@@ -71,6 +68,12 @@ namespace visualime::primitive {                              // !!!all the coor
         }
         [[nodiscard]] math_utils::aabb get_aabb() const override {
             return bounding_box;
+        }
+        [[nodiscard]] glm::vec2 get_position() const override {
+            return _position;
+        }
+        [[nodiscard]] double get_rotation() const override {
+            return _angle;
         }
 
     private:
@@ -119,7 +122,7 @@ namespace visualime::primitive {                              // !!!all the coor
             recompute_bbox();                                                     // compute for rotation
         }
 
-        [[nodiscard]] glm::vec3 show_color(const glm::vec2& point) const override {
+        [[nodiscard]] glm::vec<3, unsigned char> show_color(const glm::vec2& point) const override {
             if (!_bbox.contains(point))
                 return {0, 0, 0};
             if (!should_show(point))
@@ -168,6 +171,12 @@ namespace visualime::primitive {                              // !!!all the coor
         }
         [[nodiscard]] math_utils::aabb get_aabb() const override {
             return _bbox;
+        }
+        [[nodiscard]] glm::vec2 get_position() const override {
+            return _position;
+        }
+        [[nodiscard]] double get_rotation() const override {
+            return _angle;
         }
 
     private:

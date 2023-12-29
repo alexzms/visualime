@@ -7,7 +7,7 @@ static std::random_device rd;
 static std::mt19937 mt(rd());
 static std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-glm::vec3 random_color() {
+glm::vec<3, unsigned char> random_color() {
     return {static_cast<unsigned char>(dist(mt) * 255),
             static_cast<unsigned char>(dist(mt) * 255),
             static_cast<unsigned char>(dist(mt) * 255)};
@@ -16,7 +16,7 @@ glm::vec3 random_color() {
 auto main() -> int {
     std::cout << "Hello, World from Visualime!" << '\n';
 
-    visualime::scene2d test_scene(800, 800, 1.0, false);
+    visualime::cuda_scene2d test_scene(800, 800, 1.0, false);
     test_scene.add_circle_normalized();
     auto rectangle_ptr = std::make_shared<visualime::primitive::solid_rectangle>(glm::vec2{0.5, 0.5}, 0.1, 0.1, 0.3, random_color());
     auto circle_ptr = std::make_shared<visualime::primitive::solid_circle>(glm::vec2{0.5, 0.5}, 0.1, 0.3, random_color());
@@ -24,14 +24,18 @@ auto main() -> int {
     test_scene.add_primitive(rectangle_ptr);
     size_t line_index = test_scene.add_line_normalized(random_color(), {0.1, 0.1}, {0.9, 0.9}, 0.1, 0.01);
     test_scene.launch(true);
+
 //    test_scene.delete_primitive(0);
 //    test_scene.delete_primitive(1);
 //    test_scene.delete_primitive(2);
     double rotation = 0, end = 0.9;
+    unsigned diagonal = 0;
     for (int i = 0; i != 600; ++i) {
         // rotate rectangle
         rotation += 0.1;
         end -= 0.01;
+        if (diagonal < 800) diagonal += 1;
+        test_scene.draw_pixel({diagonal, diagonal}, {255, 255, 255});
         if (!rectangle_ptr->set_rotation(rotation)) {
             std::cout << "Failed to rotate rectangle" << std::endl;
         }

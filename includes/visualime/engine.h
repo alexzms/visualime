@@ -5,23 +5,31 @@
 #ifndef VISUALIME_ENGINE_H
 #define VISUALIME_ENGINE_H
 
+#define VISUALIME_USE_CUDA
+
 #include "iostream"
 #include "primitives.h"
 #include "opengl_wrapper.h"
 #include "vector"
 #include "math_utils.h"
-#include "omp.h"
+#include "renderer.h"
+#include "canvas.h"
+//#include
+
 
 namespace visualime::engine {
     class engine_base {
     public:
         virtual ~engine_base() = default;
-        virtual void render(std::vector<std::shared_ptr<primitive::primitive_base>> primitives) = 0;
+        virtual void render(const std::vector<std::shared_ptr<primitive::primitive_base>>& primitives,
+                            std::shared_ptr<canvas::canvas_base> background_canvas) = 0;
     };
 
     class simple_engine: public engine_base {
     public:
-        simple_engine(unsigned int width, unsigned int height): _width(width), _height(height) {
+        simple_engine(unsigned int width, unsigned int height, const math_utils::interval render_border = {0, 1}):
+                    _width(width), _height(height), _render_border(render_border),
+                    _renderer(width, height, render_border) {
             std::cout << "Engine initialized (" << width << "x" << height <<")" << std::endl;
             _data = new unsigned char[_width * _height * 3];
             _data_buffer = new unsigned char[_width * _height * 3];
@@ -36,76 +44,21 @@ namespace visualime::engine {
             delete[] _depth;
         }
 
-        void render(std::vector<std::shared_ptr<primitive::primitive_base>> primitives) override {
-            memset(_data_buffer, 0, _width * _height * 3 * sizeof(unsigned char));
-            memset(_depth, 0, _width * _height * sizeof(float));        // first write as black
-            math_utils::interval render_border{0, 1};
-            #pragma omp parallel for
-            for (int i = 0; i < primitives.size(); ++i) {
-                auto primitive = primitives[i];
-                if (primitive == nullptr)                                             // deleted primitvie
-                    continue;
-                auto bounding_box = primitive->get_aabb().clamped(render_border);
-                if (bounding_box.is_empty())
-                    continue;                                // if empty, skip this
-                for (int i = (int)ceil(bounding_box.y_inter.min * _height);        // ceil to avoid missing pixels
-                     i < bounding_box.y_inter.max * _height;
-                     ++i) {
-                    for (int j = (int)ceil(bounding_box.x_inter.min * _width);
-                         j < bounding_box.x_inter.max * _width;
-                         ++j) {
+        void render(const std::vector<std::shared_ptr<primitive::primitive_base>>& primitives,
+                    std::shared_ptr<canvas::canvas_base> background_canvas) override {
 
-                        glm::vec2 point = {j / static_cast<double>(_width), i / static_cast<double>(_height)};
-                        glm::vec3 color = primitive->show_color(point);
-                        auto depth = (float)primitive->get_depth(point);
-                        unsigned offset = i * _width + j;
-                        if (depth > _depth[offset]) {
-                            _depth[offset] = depth;
-                            _data_buffer[offset * 3] = static_cast<unsigned char>(color.r);
-                            _data_buffer[offset * 3 + 1] = static_cast<unsigned char>(color.g);
-                            _data_buffer[offset * 3 + 2] = static_cast<unsigned char>(color.b);
-                        }
-                    }
-                }
+            // copy from _background_canvas
+            if (background_canvas == nullptr) {                                         // from canvas or blank
+                memset(_data, 0, _width * _height * 3 * sizeof(unsigned char));
+            } else {
+                memcpy(_data, background_canvas->get_data(), _width * _height * 3 * sizeof(unsigned char));
             }
-            auto tmp = _data;                               // swap buffer
+            memset(_depth, 0, _width * _height * sizeof(float));
+            _renderer.render(primitives, _data_buffer, _depth);
+            auto tmp = _data;                                           // swap buffer
             _data = _data_buffer;
             _data_buffer = tmp;
         }
-
-//        void render_for_pixels(std::vector<std::shared_ptr<primitive::primitive_base>> primitives) override {
-//            memset(_data_buffer, 0, _width * _height * 3 * sizeof(unsigned char));
-//            memset(_depth, 0, _width * _height * sizeof(float));
-//            // openmp
-//            #pragma omp parallel for
-//            for (int i = 0; i < _height; ++i) {
-//                for (int j = 0; j != _width; ++j) {
-//                    glm::vec3 color = {0, 0, 0};
-//                    unsigned offset = i * _width + j;
-//                    bool update = false;
-//                    for (auto& primitive: primitives) {
-//                        glm::vec3 temp_color = primitive->show_color(j / static_cast<double>(_width),
-//                                                                     i / static_cast<double>(_height));
-//                        float depth = primitive->get_depth(
-//                                j / static_cast<double>(_width),
-//                                i / static_cast<double>(_height));
-//                        if (depth > _depth[offset]) {
-//                            _depth[offset] = depth;
-//                            color = temp_color;
-//                            update = true;
-//                        }
-//                    }
-//                    if (update) {
-//                        _data_buffer[offset * 3] = static_cast<unsigned char>(color.r);
-//                        _data_buffer[offset * 3 + 1] = static_cast<unsigned char>(color.g);
-//                        _data_buffer[offset * 3 + 2] = static_cast<unsigned char>(color.b);
-//                    }
-//                }
-//            }
-//            auto tmp = _data;                               // swap buffer
-//            _data = _data_buffer;
-//            _data_buffer = tmp;
-//        }
 
         [[nodiscard]] unsigned int get_width() const { return _width; }
         [[nodiscard]] unsigned int get_height() const { return _height; }
@@ -115,8 +68,12 @@ namespace visualime::engine {
         unsigned int _height;
         unsigned char* _data;
         unsigned char* _data_buffer;
+        renderer::simple_renderer _renderer;
+        math_utils::interval _render_border;
         float* _depth;
     };
+
+
 }
 
 #endif //VISUALIME_ENGINE_H

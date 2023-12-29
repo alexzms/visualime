@@ -1,73 +1,67 @@
 //
-// Created by alexzms on 2023/12/10.
+// Created by alexzms on 2023/12/21.
 //
 
-#ifndef VISUALIME_OPENGL_WRAPPER_H
-#define VISUALIME_OPENGL_WRAPPER_H
+#ifndef UNIT_TESTS_CUDA_OPENGL_WRAPPER_CUH
+#define UNIT_TESTS_CUDA_OPENGL_WRAPPER_CUH
 
-#include "iostream"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
-#include "GLFW/glfw3.h"
-//#include "glad/glad.h"
-#include "Shader.h"
-#include "functional"
 #include "visualime/cuda/use_cuda.h"
+
+#ifdef VISUALIME_USE_CUDA
 #include "visualime/cuda/cuda_helpers.cuh"
+#include "visualime/opengl_wrapper.h"
+#include <cuda_gl_interop.h>
 
 namespace visualime::opengl_wrapper {
-    class simple_opengl_wrapper {
+    class cuda_opengl_wrapper {
     public:
-        simple_opengl_wrapper(GLsizei width, GLsizei height, bool fullscreen, double super_sampling_ratio = 1.0):
-        _width(width), _height(height), _fullscreen(fullscreen), _super_sampling_ratio(super_sampling_ratio) {
+        cuda_opengl_wrapper(GLsizei width, GLsizei height, bool fullscreen, double super_sampling_ratio = 1.0):
+                _width(width), _height(height), _fullscreen(fullscreen), _super_sampling_ratio(super_sampling_ratio) {
             _vertices = new float[5 * 4]{
-                // positions          // texture coords
-                1.0f,  1.0f, 0.0f,   1.0f, 1.0f, // top right
-                1.0f, -1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-                -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, // bottom left
-                -1.0f,  1.0f, 0.0f,   0.0f, 1.0f  // top left
+                    // positions          // texture coords
+                    1.0f,  1.0f, 0.0f,   1.0f, 1.0f, // top right
+                    1.0f, -1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+                    -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, // bottom left
+                    -1.0f,  1.0f, 0.0f,   0.0f, 1.0f  // top left
             };
             _indices = new unsigned int[6]{
-                0, 1, 3, // first triangle
-                1, 2, 3  // second triangle
+                    0, 1, 3, // first triangle
+                    1, 2, 3  // second triangle
             };
             _vertices_size = 5 * 4 * sizeof(float);
             _indices_size = 6 * sizeof(unsigned int);
-            _data = new unsigned char[(size_t)(_width * _height * 3 * super_sampling_ratio * super_sampling_ratio)];
             vert_shader = new char[1024]{
-                "#version 460\n"
-                "layout (location = 0) in vec3 aPos;\n"
-                "layout (location = 1) in vec2 aTexCoord;\n"
-                "\n"
-                "out vec2 TexCoord;\n"
-                "\n"
-                "void main()\n"
-                "{\n"
-                "    gl_Position = vec4(aPos, 1.0);\n"
-                "    TexCoord = aTexCoord;\n"
-                "}\n"
+                    "#version 460\n"
+                    "layout (location = 0) in vec3 aPos;\n"
+                    "layout (location = 1) in vec2 aTexCoord;\n"
+                    "\n"
+                    "out vec2 TexCoord;\n"
+                    "\n"
+                    "void main()\n"
+                    "{\n"
+                    "    gl_Position = vec4(aPos, 1.0);\n"
+                    "    TexCoord = aTexCoord;\n"
+                    "}\n"
             };
             frag_shader = new char[1024]{
-                "#version 460\n"
-                "\n"
-                "in vec2 TexCoord;\n"
-                "\n"
-                "uniform sampler2D tex;\n"
-                "\n"
-                "// simply output the color of the texture as fragment color\n"
-                "out vec4 FragColor;\n"
-                "\n"
-                "void main()\n"
-                "{\n"
-                "    FragColor = texture(tex, TexCoord);\n"
-                "}\n"
+                    "#version 460\n"
+                    "\n"
+                    "in vec2 TexCoord;\n"
+                    "\n"
+                    "uniform sampler2D tex;\n"
+                    "\n"
+                    "// simply output the color of the texture as fragment color\n"
+                    "out vec4 FragColor;\n"
+                    "\n"
+                    "void main()\n"
+                    "{\n"
+                    "    FragColor = texture(tex, TexCoord);\n"
+                    "}\n"
             };
         }
-        ~simple_opengl_wrapper() {
+        ~cuda_opengl_wrapper() {
             delete[] _vertices;
             delete[] _indices;
-            delete[] _data;
             delete[] vert_shader;
             delete[] frag_shader;
         }
@@ -77,14 +71,14 @@ namespace visualime::opengl_wrapper {
 
         void init() {                                                 // init opengl(thread-sensitive context)
             std::cout << "[wrapper]Launching OpenGL(" << _width << "x" << _height << ") with super sampling "
-                        << _super_sampling_ratio << "x" << std::endl;
+                      << _super_sampling_ratio << "x" << std::endl;
 
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             _window = glfwCreateWindow(_width, _height, "Visualime",
-                                  _fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+                                       _fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
             if (_window == nullptr) {
                 std::cout << "[wrapper]Failed to create GLFW _window" << std::endl;
                 glfwTerminate();
@@ -93,8 +87,8 @@ namespace visualime::opengl_wrapper {
             glfwMakeContextCurrent(_window);
             glfwSetFramebufferSizeCallback(_window,
                                            [](GLFWwindow* window, int width, int height) {
-                        glViewport(0, 0, width, height);
-                    });
+                                               glViewport(0, 0, width, height);
+                                           });
             glfwSetWindowUserPointer(_window, this);
             glfwSetCursorPosCallback(_window, static_mouse_callback);
             glfwSetScrollCallback(_window, static_scroll_callback);
@@ -131,9 +125,22 @@ namespace visualime::opengl_wrapper {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexImage2D(
                     GL_TEXTURE_2D, 0, GL_RGB, (GLsizei)(_width * _super_sampling_ratio),
-                    (GLsizei)(_height * _super_sampling_ratio), 0, GL_RGB, GL_UNSIGNED_BYTE, _data
+                    (GLsizei)(_height * _super_sampling_ratio), 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr
             );
             glBindTexture(GL_TEXTURE_2D, 0);
+
+            // cuda opengl interop
+            glGenBuffers(1, &bufferObj);
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, bufferObj);
+            glBufferData(GL_PIXEL_UNPACK_BUFFER,
+                         (GLsizei)(_width * _height * 3 * _super_sampling_ratio * _super_sampling_ratio * sizeof(uchar3)),
+                         nullptr, GL_DYNAMIC_DRAW);
+            CHECK_ERROR(cudaGraphicsGLRegisterBuffer(&resource, bufferObj, cudaGraphicsMapFlagsNone));
+            CHECK_ERROR(cudaGraphicsMapResources(1, &resource, nullptr));
+            CHECK_ERROR(cudaGraphicsResourceGetMappedPointer((void**)&devPtr, &size, resource));
+            CHECK_ERROR(cudaGraphicsUnmapResources(1, &resource, nullptr));
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+
             initialized = true;
             std::cout << "[wrapper]OpenGL Launch Success" << std::endl;
         }
@@ -151,17 +158,19 @@ namespace visualime::opengl_wrapper {
             }
         }
 
+        uchar3* get_ptr() const { return devPtr; }
+
         void render_call(unsigned char* data) {
             if (!initialized) { std::cout << "[call render_call()]OpenGL not initialized" << std::endl; return;}
             process_input(_window);
             glClearColor((GLfloat)(sin(glfwGetTime()) + 1)/2, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             _shader.use();
-            glActiveTexture(GL_TEXTURE0);
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, bufferObj);
             glBindTexture(GL_TEXTURE_2D, texture);
-            glTexImage2D(
-                    GL_TEXTURE_2D, 0, GL_RGB, (GLsizei)(_width * _super_sampling_ratio),
-                    (GLsizei)(_height * _super_sampling_ratio), 0, GL_RGB, GL_UNSIGNED_BYTE, data
+            glTexSubImage2D(
+                    GL_TEXTURE_2D, 0, 0, 0, (GLsizei)(_width * _super_sampling_ratio),
+                    (GLsizei)(_height * _super_sampling_ratio), GL_RGB, GL_UNSIGNED_BYTE, nullptr
             );
             _shader.setInt("tex", 0);
             glBindVertexArray(VAO);
@@ -212,7 +221,6 @@ namespace visualime::opengl_wrapper {
         GLsizei _width;
         GLsizei _height;
         double _super_sampling_ratio;
-        unsigned char* _data;
         bool _fullscreen;
         Shader _shader;
         float* _vertices;                                           // will init asa rectangle in front of the camera
@@ -225,6 +233,11 @@ namespace visualime::opengl_wrapper {
         double last_width{}, last_height{}, scroll_offset{};
         std::list<glm::vec2> _left_click_positions, _right_click_positions;
         bool initialized = false;
+
+        GLuint bufferObj{};
+        cudaGraphicsResource *resource{};                             // cuda opengl interop
+        uchar3* devPtr{};
+        size_t  size{};                                               // memory managed by cuda&opengl interop
 
 
         std::function<void(GLFWwindow *window, int button, int action, int mods)> mouse_button_callback =
@@ -261,20 +274,22 @@ namespace visualime::opengl_wrapper {
         }
 
         static void static_mouse_callback(GLFWwindow *window, double x, double y) {
-            auto *wrapper = static_cast<simple_opengl_wrapper*>(glfwGetWindowUserPointer(window));
+            auto *wrapper = static_cast<cuda_opengl_wrapper*>(glfwGetWindowUserPointer(window));
             wrapper->mouse_callback(window, x, y);
         }
 
         static void static_scroll_callback(GLFWwindow *window, double x, double y) {
-            auto *wrapper = static_cast<simple_opengl_wrapper*>(glfwGetWindowUserPointer(window));
+            auto *wrapper = static_cast<cuda_opengl_wrapper*>(glfwGetWindowUserPointer(window));
             wrapper->scroll_callback(window, x, y);
         }
 
         static void static_mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
-            auto *wrapper = static_cast<simple_opengl_wrapper*>(glfwGetWindowUserPointer(window));
+            auto *wrapper = static_cast<cuda_opengl_wrapper*>(glfwGetWindowUserPointer(window));
             wrapper->mouse_button_callback(window, button, action, mods);
         }
     };
 }
 
-#endif //VISUALIME_OPENGL_WRAPPER_H
+#endif //VISUALIME_USE_CUDA
+
+#endif //UNIT_TESTS_CUDA_OPENGL_WRAPPER_CUH
