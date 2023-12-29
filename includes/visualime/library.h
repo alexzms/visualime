@@ -9,33 +9,22 @@
 #include "opengl_wrapper.h"
 #include "thread"
 #include <ctime>
-#include "glm/glm.hpp"
-#include "glm/gtx/string_cast.hpp"
-#include "canvas.h"
 
 
 namespace visualime {
-    class scene2d {
+    void test_success_import() {
+        std::cout << "Hello, World from Visualime!" << std::endl;
+    }
+    class test_scene2d {
     public:
-        std::function<void(const glm::vec2&)> on_mouse_left_click = [](const glm::vec2& pos){
-            std::cout << "[scene2d:default] left mouse clicked at " << glm::to_string(pos) << std::endl;
-        };
-        std::function<void(const glm::vec2&)> on_mouse_right_click = [](const glm::vec2& pos){
-            std::cout << "[scene2d:default] right mouse clicked at " << glm::to_string(pos) << std::endl;
-        };
-
-
-        scene2d(unsigned int width, unsigned int height, double super_sampling_ratio = 1.0, bool fullscreen = false):
+        test_scene2d(unsigned int width,unsigned int height,double super_sampling_ratio = 1.0,bool fullscreen = false):
                 _width(width), _height(height),
                 _engine(static_cast<unsigned>(width * super_sampling_ratio) ,
                         static_cast<unsigned>(height * super_sampling_ratio)),
-                _background_canvas(std::make_shared<canvas::fullscreen_canvas>
-                                    (static_cast<unsigned>(width * super_sampling_ratio),
-                                     static_cast<unsigned>(height * super_sampling_ratio))),
                 _opengl_wrapper(static_cast<GLsizei>(width),
                                 static_cast<GLsizei>(height),
                                 fullscreen, super_sampling_ratio) {}
-        ~scene2d() {
+        ~test_scene2d() {
             if (_run_thread.joinable()) {
                 _run_thread.join();
             }
@@ -46,11 +35,10 @@ namespace visualime {
         }
 
         void run(bool show_fps = false) {
-            std::cout << "Calling run in scene2d" << std::endl;
+            std::cout << "Calling run in test_scene2d" << std::endl;
             _opengl_wrapper.init();
             double _prev_time = glfwGetTime();
             unsigned counter = 0;
-            glm::vec2 mouse_click_pos;
             while (!_opengl_wrapper.should_close()) {
                 if (show_fps) {
                     double _curr_time = glfwGetTime();
@@ -62,17 +50,10 @@ namespace visualime {
                 }
                 _mutex.lock();
                 if (_scene_changed) {
-                    _engine.render(_primitives, _background_canvas);
+                    _engine.render(_primitives);
                     _scene_changed = false;
                 }
                 _mutex.unlock();
-
-                if (_opengl_wrapper.get_left_mouse_click(mouse_click_pos))
-                    on_mouse_left_click(mouse_click_pos);
-
-                if (_opengl_wrapper.get_right_mouse_click(mouse_click_pos))
-                    on_mouse_right_click(mouse_click_pos);
-
                 _opengl_wrapper.render_call(_engine.get_data());
                 _opengl_wrapper.swap_buffers();
                 _opengl_wrapper.poll_events();
@@ -90,7 +71,7 @@ namespace visualime {
 
         void launch(bool show_fps = false) {
             _running = true;
-            _run_thread = std::thread(&scene2d::run, this, show_fps);
+            _run_thread = std::thread(&test_scene2d::run, this, show_fps);
         }
 
         [[nodiscard]] bool is_running() const {
@@ -99,18 +80,19 @@ namespace visualime {
 
         size_t add_primitive(const std::shared_ptr<primitive::primitive_base>& primitive) {
             _mutex.lock();
+            _scene_changed = true;
             _primitives.emplace_back(primitive);
             _mutex.unlock();
             return _primitives.size() - 1;
         }
 
-        void delete_primitive(size_t index) {
+        void remove_primitive(size_t index) {
             if (index >= _primitives.size()) {
-                std::cout << "[visualime][delete_primitive] index out of range" << std::endl;
+                std::cout << "[visualime][remove_primitive] index out of range" << std::endl;
                 return;
             }
             _mutex.lock();
-            _primitives[index] = nullptr;
+            _primitives.erase(_primitives.begin() + index);
             _mutex.unlock();
         }
 
@@ -128,7 +110,7 @@ namespace visualime {
             _mutex.unlock();
         }
 
-        size_t add_circle_normalized(glm::vec<3, unsigned char> color = {200, 60, 50},
+        size_t add_circle_normalized(glm::vec3 color = {200, 60, 50},
                         glm::vec2 position = {0.3, 0.5},
                         double depth = 0.1,
                         double radius = 0.1) {
@@ -152,7 +134,7 @@ namespace visualime {
             return true;
         }
 
-        size_t add_line_normalized(glm::vec<3, unsigned char> color = {200, 60, 50},
+        size_t add_line_normalized(glm::vec3 color = {200, 60, 50},
                       glm::vec2 start = {0.3, 0.5},
                       glm::vec2 end = {0.5, 0.5},
                       double depth = 0.1,
@@ -160,18 +142,6 @@ namespace visualime {
             double rotation = std::atan2(end.y - start.y, end.x - start.x);
             auto rectangle_ptr = std::make_shared<primitive::solid_rectangle>((start + end) * 0.5f, depth, glm::length(end - start), height, color, rotation);
             return add_primitive(rectangle_ptr);
-        }
-
-        bool draw_pixel(const glm::vec<2, unsigned>& unnormalized_pos, const glm::vec<3, unsigned char>& color) {
-            return _background_canvas->draw_pixel(unnormalized_pos, color);
-        }
-
-        bool draw_primitive(const std::shared_ptr<primitive::primitive_base>& primitive) {
-            return _background_canvas->draw_primitive(primitive);
-        }
-
-        bool draw_primitive_and_store(const std::shared_ptr<primitive::primitive_base>& primitive) {
-            return _background_canvas->draw_primitive_and_store(primitive);
         }
 
         [[nodiscard]] std::thread& get_run_thread() { return _run_thread; }
@@ -186,7 +156,6 @@ namespace visualime {
         std::thread _run_thread;
         std::mutex _mutex;
         double super_sampling_ratio = 1;
-        std::shared_ptr<canvas::fullscreen_canvas> _background_canvas;
     };
 }
 #endif //VISUALIME_LIBRARY_H

@@ -109,8 +109,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-7302ot"
-      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-7302ot"
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-38ol84"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-38ol84"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
@@ -119,11 +119,11 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-7302ot'
+        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-38ol84'
         
-        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_81c9d
-        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS  /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_81c9d.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_81c9d.dir\\ /FS -c "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\share\\cmake-3.27\\Modules\\CMakeCCompilerABI.c"
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_81c9d.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_81c9d.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_81c9d.exe /implib:cmTC_81c9d.lib /pdb:cmTC_81c9d.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_ced6a
+        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS  /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_ced6a.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_ced6a.dir\\ /FS -c "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\share\\cmake-3.27\\Modules\\CMakeCCompilerABI.c"
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_ced6a.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_ced6a.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_ced6a.exe /implib:cmTC_ced6a.lib /pdb:cmTC_ced6a.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -135,8 +135,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-102rso"
-      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-102rso"
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-rl26fg"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-rl26fg"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
@@ -145,11 +145,11 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-102rso'
+        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-rl26fg'
         
-        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_2972d
-        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc  /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_2972d.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_2972d.dir\\ /FS -c "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\share\\cmake-3.27\\Modules\\CMakeCXXCompilerABI.cpp"
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_2972d.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_2972d.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_2972d.exe /implib:cmTC_2972d.lib /pdb:cmTC_2972d.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_b80ee
+        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc  /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_b80ee.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_b80ee.dir\\ /FS -c "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\share\\cmake-3.27\\Modules\\CMakeCXXCompilerABI.cpp"
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_b80ee.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_b80ee.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_b80ee.exe /implib:cmTC_b80ee.lib /pdb:cmTC_b80ee.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -160,8 +160,8 @@ events:
       - "CMakeLists.txt:6 (find_package)"
     description: "Detecting C OpenMP compiler info"
     directories:
-      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-630pdf"
-      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-630pdf"
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-447aqp"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-447aqp"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
@@ -170,11 +170,11 @@ events:
       variable: "OpenMP_COMPILE_RESULT_C_openmp"
       cached: true
       stdout: |
-        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-630pdf'
+        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-447aqp'
         
-        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_ca86e
-        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -openmp /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_ca86e.dir\\OpenMPTryFlag.c.obj /FdCMakeFiles\\cmTC_ca86e.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-630pdf\\OpenMPTryFlag.c
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_ca86e.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_ca86e.dir\\OpenMPTryFlag.c.obj  /out:cmTC_ca86e.exe /implib:cmTC_ca86e.lib /pdb:cmTC_ca86e.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_99627
+        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -openmp /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_99627.dir\\OpenMPTryFlag.c.obj /FdCMakeFiles\\cmTC_99627.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-447aqp\\OpenMPTryFlag.c
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_99627.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_99627.dir\\OpenMPTryFlag.c.obj  /out:cmTC_99627.exe /implib:cmTC_99627.lib /pdb:cmTC_99627.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -185,8 +185,8 @@ events:
       - "CMakeLists.txt:6 (find_package)"
     description: "Detecting CXX OpenMP compiler info"
     directories:
-      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-t0ppw4"
-      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-t0ppw4"
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ez5sk1"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ez5sk1"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
@@ -195,11 +195,11 @@ events:
       variable: "OpenMP_COMPILE_RESULT_CXX_openmp"
       cached: true
       stdout: |
-        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-t0ppw4'
+        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ez5sk1'
         
-        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_c75f8
-        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc -openmp /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_c75f8.dir\\OpenMPTryFlag.cpp.obj /FdCMakeFiles\\cmTC_c75f8.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-t0ppw4\\OpenMPTryFlag.cpp
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_c75f8.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_c75f8.dir\\OpenMPTryFlag.cpp.obj  /out:cmTC_c75f8.exe /implib:cmTC_c75f8.lib /pdb:cmTC_c75f8.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_ee339
+        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc -openmp /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_ee339.dir\\OpenMPTryFlag.cpp.obj /FdCMakeFiles\\cmTC_ee339.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ez5sk1\\OpenMPTryFlag.cpp
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_ee339.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_ee339.dir\\OpenMPTryFlag.cpp.obj  /out:cmTC_ee339.exe /implib:cmTC_ee339.lib /pdb:cmTC_ee339.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -210,8 +210,8 @@ events:
       - "CMakeLists.txt:6 (find_package)"
     description: "Detecting C OpenMP version"
     directories:
-      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-hz6hji"
-      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-hz6hji"
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i23agh"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i23agh"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
@@ -220,11 +220,11 @@ events:
       variable: "OpenMP_SPECTEST_C_"
       cached: true
       stdout: |
-        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-hz6hji'
+        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i23agh'
         
-        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_b80b3
-        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -openmp /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_b80b3.dir\\OpenMPCheckVersion.c.obj /FdCMakeFiles\\cmTC_b80b3.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-hz6hji\\OpenMPCheckVersion.c
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_b80b3.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_b80b3.dir\\OpenMPCheckVersion.c.obj  /out:cmTC_b80b3.exe /implib:cmTC_b80b3.lib /pdb:cmTC_b80b3.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_0fec2
+        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -openmp /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_0fec2.dir\\OpenMPCheckVersion.c.obj /FdCMakeFiles\\cmTC_0fec2.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-i23agh\\OpenMPCheckVersion.c
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_0fec2.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_0fec2.dir\\OpenMPCheckVersion.c.obj  /out:cmTC_0fec2.exe /implib:cmTC_0fec2.lib /pdb:cmTC_0fec2.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -235,8 +235,8 @@ events:
       - "CMakeLists.txt:6 (find_package)"
     description: "Detecting CXX OpenMP version"
     directories:
-      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-n3s1e8"
-      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-n3s1e8"
+      source: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-k2bvgj"
+      binary: "E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-k2bvgj"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
@@ -245,11 +245,11 @@ events:
       variable: "OpenMP_SPECTEST_CXX_"
       cached: true
       stdout: |
-        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-n3s1e8'
+        Change Dir: 'E:/ComputerGraphics/projects/visualime/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-k2bvgj'
         
-        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_97d3b
-        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc -openmp /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_97d3b.dir\\OpenMPCheckVersion.cpp.obj /FdCMakeFiles\\cmTC_97d3b.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-n3s1e8\\OpenMPCheckVersion.cpp
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_97d3b.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_97d3b.dir\\OpenMPCheckVersion.cpp.obj  /out:cmTC_97d3b.exe /implib:cmTC_97d3b.lib /pdb:cmTC_97d3b.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/JetBrains/CLion 2023.2/bin/ninja/win/x64/ninja.exe" -v cmTC_07168
+        [1/2] C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc -openmp /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_07168.dir\\OpenMPCheckVersion.cpp.obj /FdCMakeFiles\\cmTC_07168.dir\\ /FS -c E:\\ComputerGraphics\\projects\\visualime\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-k2bvgj\\OpenMPCheckVersion.cpp
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\JetBrains\\CLion 2023.2\\bin\\cmake\\win\\x64\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_07168.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MIB055~1\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_07168.dir\\OpenMPCheckVersion.cpp.obj  /out:cmTC_07168.exe /implib:cmTC_07168.lib /pdb:cmTC_07168.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
 ...
