@@ -11,6 +11,7 @@
 #include <ctime>
 #include "glm/glm.hpp"
 #include "glm/gtx/string_cast.hpp"
+#include "canvas.h"
 
 
 namespace visualime {
@@ -28,6 +29,9 @@ namespace visualime {
                 _width(width), _height(height),
                 _engine(static_cast<unsigned>(width * super_sampling_ratio) ,
                         static_cast<unsigned>(height * super_sampling_ratio)),
+                _background_canvas(std::make_shared<canvas::fullscreen_canvas>
+                                    (static_cast<unsigned>(width * super_sampling_ratio),
+                                     static_cast<unsigned>(height * super_sampling_ratio))),
                 _opengl_wrapper(static_cast<GLsizei>(width),
                                 static_cast<GLsizei>(height),
                                 fullscreen, super_sampling_ratio) {}
@@ -58,7 +62,7 @@ namespace visualime {
                 }
                 _mutex.lock();
                 if (_scene_changed) {
-                    _engine.render(_primitives);
+                    _engine.render(_primitives, _background_canvas);
                     _scene_changed = false;
                 }
                 _mutex.unlock();
@@ -124,7 +128,7 @@ namespace visualime {
             _mutex.unlock();
         }
 
-        size_t add_circle_normalized(glm::vec3 color = {200, 60, 50},
+        size_t add_circle_normalized(glm::vec<3, unsigned char> color = {200, 60, 50},
                         glm::vec2 position = {0.3, 0.5},
                         double depth = 0.1,
                         double radius = 0.1) {
@@ -148,7 +152,7 @@ namespace visualime {
             return true;
         }
 
-        size_t add_line_normalized(glm::vec3 color = {200, 60, 50},
+        size_t add_line_normalized(glm::vec<3, unsigned char> color = {200, 60, 50},
                       glm::vec2 start = {0.3, 0.5},
                       glm::vec2 end = {0.5, 0.5},
                       double depth = 0.1,
@@ -156,6 +160,18 @@ namespace visualime {
             double rotation = std::atan2(end.y - start.y, end.x - start.x);
             auto rectangle_ptr = std::make_shared<primitive::solid_rectangle>((start + end) * 0.5f, depth, glm::length(end - start), height, color, rotation);
             return add_primitive(rectangle_ptr);
+        }
+
+        bool draw_pixel(const glm::vec<2, unsigned>& unnormalized_pos, const glm::vec<3, unsigned char>& color) {
+            return _background_canvas->draw_pixel(unnormalized_pos, color);
+        }
+
+        bool draw_primitive(const std::shared_ptr<primitive::primitive_base>& primitive) {
+            return _background_canvas->draw_primitive(primitive);
+        }
+
+        bool draw_primitive_and_store(const std::shared_ptr<primitive::primitive_base>& primitive) {
+            return _background_canvas->draw_primitive_and_store(primitive);
         }
 
         [[nodiscard]] std::thread& get_run_thread() { return _run_thread; }
@@ -170,6 +186,7 @@ namespace visualime {
         std::thread _run_thread;
         std::mutex _mutex;
         double super_sampling_ratio = 1;
+        std::shared_ptr<canvas::fullscreen_canvas> _background_canvas;
     };
 }
 #endif //VISUALIME_LIBRARY_H

@@ -224,6 +224,7 @@ namespace visualime::opengl_wrapper {
         std::list<glm::vec2> _left_click_positions, _right_click_positions;
         bool initialized = false;
 
+
         std::function<void(GLFWwindow *window, int button, int action, int mods)> mouse_button_callback =
                 [this](GLFWwindow *window, int button, int action, int mods) {
                     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {

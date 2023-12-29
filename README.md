@@ -15,10 +15,10 @@ https://github.com/alexzms/learn_fluid)).
 - [x] Depth buffer
 - [x] OpenMP parallelization
 - [x] Primitive-based rendering(small optimization)
+- [x] Canvas System(Easily draw pixels directly on the screen)
 
 ## TODO
 - [ ] Triangle primitive
-- [ ] Canvas System(Easily draw pixels directly on the screen)
 - [ ] *CUDA parallelization(big optimization)
 
 (*) means it's highly wanted.
