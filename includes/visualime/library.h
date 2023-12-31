@@ -149,7 +149,7 @@ namespace visualime {
         unsigned int _width;
         unsigned int _height;
         std::vector<std::shared_ptr<primitive::primitive_base>> _primitives;
-        engine::simple_engine _engine;
+        engine::orthogonal_engine _engine;
         opengl_wrapper::simple_opengl_wrapper _opengl_wrapper;
         bool _scene_changed = false;
         bool _running = false;

@@ -18,7 +18,9 @@ namespace visualime::opengl_wrapper {
     class simple_opengl_wrapper {
     public:
         simple_opengl_wrapper(GLsizei width, GLsizei height, bool fullscreen, double super_sampling_ratio = 1.0):
-        _width(width), _height(height), _fullscreen(fullscreen), _super_sampling_ratio(super_sampling_ratio) {
+                _width(width), _height(height), _fullscreen(fullscreen), _ss_ratio(super_sampling_ratio),
+                _render_width(static_cast<GLsizei>(_width * _ss_ratio)),
+                _render_height(static_cast<GLsizei>(_height * _ss_ratio)){
             _vertices = new float[5 * 4]{
                 // positions          // texture coords
                 1.0f,  1.0f, 0.0f,   1.0f, 1.0f, // top right
@@ -32,7 +34,9 @@ namespace visualime::opengl_wrapper {
             };
             _vertices_size = 5 * 4 * sizeof(float);
             _indices_size = 6 * sizeof(unsigned int);
-            _data = new unsigned char[(size_t)(_width * _height * 3 * super_sampling_ratio * super_sampling_ratio)];
+            _data_size = _render_height * _render_width * 3 * sizeof(unsigned char);
+            _data = new unsigned char[_data_size];
+            memset(_data, 0, _data_size);
             vert_shader = new char[1024]{
                 "#version 460\n"
                 "layout (location = 0) in vec3 aPos;\n"
@@ -75,7 +79,7 @@ namespace visualime::opengl_wrapper {
 
         void init() {                                                 // init opengl(thread-sensitive context)
             std::cout << "[wrapper]Launching OpenGL(" << _width << "x" << _height << ") with super sampling "
-                        << _super_sampling_ratio << "x" << std::endl;
+                      << _ss_ratio << "x" << std::endl;
 
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -115,12 +119,19 @@ namespace visualime::opengl_wrapper {
             glBufferData(GL_ARRAY_BUFFER, _vertices_size, _vertices, GL_STATIC_DRAW);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices_size, _indices, GL_STATIC_DRAW);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)nullptr);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+                                  (void*)nullptr);
             glEnableVertexAttribArray(0);
-            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+                                  (void*)(3 * sizeof(float)));
             glEnableVertexAttribArray(1);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
+
+            glGenBuffers(1, &PBO);
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, PBO);
+            glBufferData(GL_PIXEL_UNPACK_BUFFER, (GLsizeiptr)_data_size, nullptr, GL_STREAM_DRAW);
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 
             glGenTextures(1, &texture);
             glBindTexture(GL_TEXTURE_2D, texture);
@@ -128,39 +139,58 @@ namespace visualime::opengl_wrapper {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexImage2D(
-                    GL_TEXTURE_2D, 0, GL_RGB, (GLsizei)(_width * _super_sampling_ratio),
-                    (GLsizei)(_height * _super_sampling_ratio), 0, GL_RGB, GL_UNSIGNED_BYTE, _data
+                    GL_TEXTURE_2D, 0, GL_RGB, _render_width,
+                    _render_height, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                    _data
             );
             glBindTexture(GL_TEXTURE_2D, 0);
-            initialized = true;
+            _initialized = true;
             std::cout << "[wrapper]OpenGL Launch Success" << std::endl;
         }
 
         void destroy() {
-            if (initialized) {
+            if (_initialized) {
                 glDeleteVertexArrays(1, &VAO);
                 glDeleteBuffers(1, &VBO);
                 glDeleteBuffers(1, &EBO);
                 glDeleteTextures(1, &texture);
                 glfwDestroyWindow(_window);
                 glfwTerminate();
-                initialized = false;
+                _initialized = false;
                 std::cout << "[wrapper]Destroying simple_opengl_wrapper" << std::endl;
             }
         }
 
+        unsigned char* get_internal_data() {
+            return _data;
+        }
+
+        void render_call_internal_data() {
+            if (!_last_internal_render) {
+                render_call(_data);
+                _last_internal_render = true;
+                return;
+            }
+            _render_call_internal();
+       }
+
         void render_call(unsigned char* data) {
-            if (!initialized) { std::cout << "[call render_call()]OpenGL not initialized" << std::endl; return;}
+            if (!_initialized) { std::cout << "[call render_call()]OpenGL not _initialized" << std::endl; return;}
+            _last_internal_render = false;
             process_input(_window);
-            glClearColor((GLfloat)(sin(glfwGetTime()) + 1)/2, 0.3f, 0.3f, 1.0f);
+            glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             _shader.use();
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, PBO);
+            glBufferData(GL_PIXEL_UNPACK_BUFFER, (GLsizeiptr)_data_size, data, GL_STREAM_DRAW);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
             glTexImage2D(
-                    GL_TEXTURE_2D, 0, GL_RGB, (GLsizei)(_width * _super_sampling_ratio),
-                    (GLsizei)(_height * _super_sampling_ratio), 0, GL_RGB, GL_UNSIGNED_BYTE, data
+                    GL_TEXTURE_2D, 0, GL_RGB, _render_width,
+                    _render_height, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                    nullptr
             );
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
             _shader.setInt("tex", 0);
             glBindVertexArray(VAO);
             glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -172,7 +202,7 @@ namespace visualime::opengl_wrapper {
         }
 
         bool get_left_mouse_click(glm::vec2& pos) {
-            if (!initialized) { std::cout << "[wrapper][call get_left_mouse_click()]OpenGL not initialized" << std::endl; return false;}
+            if (!_initialized) { std::cout << "[wrapper][call get_left_mouse_click()]OpenGL not _initialized" << std::endl; return false;}
             if (_left_click_positions.empty())
                 return false;
 
@@ -182,7 +212,7 @@ namespace visualime::opengl_wrapper {
         }
 
         bool get_right_mouse_click(glm::vec2& pos) {
-            if (!initialized) { std::cout << "[wrapper][call get_right_mouse_click()]OpenGL not initialized" << std::endl; return false;}
+            if (!_initialized) { std::cout << "[wrapper][call get_right_mouse_click()]OpenGL not _initialized" << std::endl; return false;}
             if (_right_click_positions.empty())
                 return false;
 
@@ -192,24 +222,25 @@ namespace visualime::opengl_wrapper {
         }
 
         void swap_buffers() {
-            if (!initialized) { std::cout << "[wrapper][call swap_buffer()]OpenGL not initialized" << std::endl; return;}
+            if (!_initialized) { std::cout << "[wrapper][call swap_buffer()]OpenGL not _initialized" << std::endl; return;}
             glfwSwapBuffers(_window);
         }
 
         void poll_events() const {
-            if (!initialized) { std::cout << "[wrapper][call pull_events()]OpenGL not initialized" << std::endl; return;}
+            if (!_initialized) { std::cout << "[wrapper][call pull_events()]OpenGL not _initialized" << std::endl; return;}
             glfwPollEvents();
         }
 
         bool should_close() {
-            if (!initialized) { return false; }
+            if (!_initialized) { return false; }
             return glfwWindowShouldClose(_window);
         }
 
     private:
-        GLsizei _width;
-        GLsizei _height;
-        double _super_sampling_ratio;
+        GLsizei _width, _height;
+        double _ss_ratio;
+        GLsizei _render_width, _render_height;
+        size_t _data_size;
         unsigned char* _data;
         bool _fullscreen;
         Shader _shader;
@@ -218,12 +249,39 @@ namespace visualime::opengl_wrapper {
         GLsizei _vertices_size, _indices_size;
         char* vert_shader;
         char* frag_shader;
-        GLuint VAO{}, VBO{}, EBO{}, texture{};
+        GLuint VAO{}, VBO{}, EBO{}, PBO{}, texture{};
         GLFWwindow* _window{};
         double last_width{}, last_height{}, scroll_offset{};
         std::list<glm::vec2> _left_click_positions, _right_click_positions;
-        bool initialized = false;
+        bool _initialized = false;
+        bool _last_internal_render = false;
 
+
+        void _render_call_internal() {
+            if (!_initialized) { std::cout << "[call render_call()]OpenGL not _initialized" << std::endl; return;}
+            process_input(_window);
+            glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            _shader.use();
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, PBO);
+            glBufferData(GL_PIXEL_UNPACK_BUFFER, (GLsizeiptr)_data_size, _data, GL_STREAM_DRAW);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture);
+            glTexImage2D(
+                    GL_TEXTURE_2D, 0, GL_RGB, _render_width,
+                    _render_height, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                    nullptr
+            );
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+            _shader.setInt("tex", 0);
+            glBindVertexArray(VAO);
+            glBindBuffer(GL_ARRAY_BUFFER, VBO);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glBindVertexArray(0);
+        }
 
         std::function<void(GLFWwindow *window, int button, int action, int mods)> mouse_button_callback =
                 [this](GLFWwindow *window, int button, int action, int mods) {

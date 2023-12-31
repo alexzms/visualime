@@ -6,6 +6,7 @@
 #define VISUALIME_CANVAS_H
 
 #include "primitives.h"
+#include "renderer.h"
 #include "glm/glm.hpp"
 
 namespace visualime::canvas {
@@ -18,37 +19,53 @@ namespace visualime::canvas {
         virtual bool draw_primitive_and_store(const std::shared_ptr<primitive::primitive_base>& primitive)
                                                                                                  { return false; }
         virtual bool draw_all() { return false; }                           // draw what's stored conveniently
-        virtual bool flush() { return false; }                              // flush is to clear to black
+        virtual bool flush() = 0;                                           // flush is to clear to black
         [[nodiscard]] virtual const unsigned char* get_data() const = 0;
     };
 
-    class fullscreen_canvas : public canvas_base {
+    class fullscreen_orthogonal_canvas : public canvas_base {
     public:                                                                 // fullscreen canvas has optimization
-        fullscreen_canvas(unsigned int width, unsigned int height, double depth = 0):
+        fullscreen_orthogonal_canvas(unsigned int width, unsigned int height, double depth = 0):
+                                _renderer(width, height, {0, 1}),
                                 _width(width), _height(height), _depth(depth) {
             _data = new unsigned char[_width * _height * 3];
+            _data_depth = new float[_width * _height];
             memset(_data, 0, _width * _height * 3 * sizeof(unsigned char));
+            memset(_data_depth, 0, _width * _height * sizeof (float));
         }
-        ~fullscreen_canvas() override {
+        ~fullscreen_orthogonal_canvas() override {
             delete[] _data;
         }
         [[nodiscard]] const unsigned char* get_data() const override {
              return _data;
         }
 
-        // TODO: implement these functions
-//        virtual bool draw_primitive(const std::shared_ptr<primitive::primitive_base>& primitive) { return false; }
-//        virtual bool draw_primitive_and_store(const std::shared_ptr<primitive::primitive_base>& primitive)
-//        { return false; }
-//        virtual bool draw_all() { return false; }                           // draw what's stored conveniently
-//        virtual bool flush() { return false; }                              // flush is to clear to black
+        bool draw_primitive(const std::shared_ptr<primitive::primitive_base>& primitive) override {
+            _renderer.render_single(primitive, _data, _data_depth);
+            return true;
+        }
+        bool draw_primitive_and_store(const std::shared_ptr<primitive::primitive_base>& primitive) override {
+            _renderer.render_single(primitive, _data, _data_depth);
+            _primitives.emplace_back(primitive);
+            return true;
+        }
+        bool draw_all() override {
+            _renderer.render(_primitives, _data, _data_depth);
+            return true;
+        }
+        bool flush() override {
+            memset(_data, 0, _width * _height * 3 * sizeof(unsigned char));
+            memset(_data_depth, 0, _width * _height * sizeof(float));
+            return true;
+        }
 
-        bool draw_pixel(const glm::vec<2, unsigned>& unnormalized_pos, const glm::vec<3, unsigned char>& color) override {
+        bool draw_pixel(const glm::vec<2, unsigned>& unnormalized_pos,
+                        const glm::vec<3, unsigned char>& color) override {
                                                                             // !!!in range of _width, _height!!!
             auto offset = unnormalized_pos.y * _width + unnormalized_pos.x;
             _data[offset * 3] = color.r;
             _data[offset * 3 + 1] = color.g;
-            _data[offset * 3 + 2] = color.b;
+            _data[offset * 3 + 2] = color.b;                                // pixel is always on top! wierd but fast
             return true;
         }
 
@@ -66,7 +83,7 @@ namespace visualime::canvas {
         }
 
         [[nodiscard]] double get_depth(const glm::vec2 &point) const override {
-            return 0;
+            return _depth;
         }
         [[nodiscard]] math_utils::aabb get_aabb() const override {
             return {glm::vec2{0, 0}, glm::vec2{1, 1}};  // from 0,0 to 1,1 bounding box(full screen)
@@ -81,15 +98,14 @@ namespace visualime::canvas {
          * set_position and set_rotation are not supported, default is return false
          */
 
-
-
-
     private:
         unsigned int _width;
         unsigned int _height;
         unsigned char* _data;
+        float* _data_depth;
         double _depth;
-
+        std::vector<std::shared_ptr<primitive::primitive_base>> _primitives;    // stored primitives
+        renderer::orthogonal_renderer _renderer;                                // also need a renderer to draw primitives
     };
 
 }

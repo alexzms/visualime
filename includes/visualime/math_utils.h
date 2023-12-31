@@ -32,6 +32,11 @@ namespace visualime::math_utils {
         return point_relative_rotated + center;
     }
 
+    [[nodiscard]] inline long long sleep_time_corrected(unsigned int framerate, long long frame_duration) {
+        if (framerate <= 60) return 1000000 / framerate - frame_duration - 2200;
+        return 1000000 / framerate - frame_duration - 20;
+    }
+
     class interval {
     public:
         double min, max;                                                            // no need for over-wrapping

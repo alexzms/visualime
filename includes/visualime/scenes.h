@@ -12,6 +12,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtx/string_cast.hpp"
 #include "canvas.h"
+#include "chrono"
 
 
 namespace visualime {
@@ -27,14 +28,15 @@ namespace visualime {
 
         scene2d(unsigned int width, unsigned int height, double super_sampling_ratio = 1.0, bool fullscreen = false):
                 _width(width), _height(height),
-                _engine(static_cast<unsigned>(width * super_sampling_ratio) ,
-                        static_cast<unsigned>(height * super_sampling_ratio)),
-                _background_canvas(std::make_shared<canvas::fullscreen_canvas>
+                _background_canvas(std::make_shared<canvas::fullscreen_orthogonal_canvas>
                                     (static_cast<unsigned>(width * super_sampling_ratio),
                                      static_cast<unsigned>(height * super_sampling_ratio))),
                 _opengl_wrapper(static_cast<GLsizei>(width),
                                 static_cast<GLsizei>(height),
-                                fullscreen, super_sampling_ratio) {}
+                                fullscreen, super_sampling_ratio),
+                _engine(static_cast<unsigned>(width * super_sampling_ratio) ,
+                        static_cast<unsigned>(height * super_sampling_ratio),
+                        _opengl_wrapper.get_internal_data()) {}
         ~scene2d() {
             if (_run_thread.joinable()) {
                 _run_thread.join();
@@ -45,7 +47,7 @@ namespace visualime {
             return _opengl_wrapper.should_close();
         }
 
-        void run(bool show_fps = false) {
+        void run(bool show_fps = false, bool show_performance = false, unsigned int lock_framerate = 60) {
             std::cout << "Calling run in scene2d" << std::endl;
             _opengl_wrapper.init();
             double _prev_time = glfwGetTime();
@@ -60,10 +62,27 @@ namespace visualime {
                         _prev_time = _curr_time;
                     }
                 }
+                auto frame_start = std::chrono::high_resolution_clock::now();
                 _mutex.lock();
                 if (_scene_changed) {
+                    auto render_start = std::chrono::high_resolution_clock::now();
                     _engine.render(_primitives, _background_canvas);
                     _scene_changed = false;
+                    auto render_end = std::chrono::high_resolution_clock::now();
+                    if (show_performance) {
+                        std::cout << "[scene][performance] _engine.render(): "
+                                  << std::chrono::duration_cast<std::chrono::microseconds>(render_end - render_start).count()
+                                  << " us" << std::endl;
+                    }
+                    auto render_call_start = std::chrono::high_resolution_clock::now();
+                    _opengl_wrapper.render_call_internal_data();
+                    _opengl_wrapper.swap_buffers();
+                    auto render_call_end = std::chrono::high_resolution_clock::now();
+                    if (show_performance) {
+                        std::cout << "[scene][performance] _opengl_wrapper.render_call(): "
+                        << std::chrono::duration_cast<std::chrono::microseconds>
+                                (render_call_end - render_call_start).count() << " us" << std::endl;
+                    }
                 }
                 _mutex.unlock();
 
@@ -72,10 +91,16 @@ namespace visualime {
 
                 if (_opengl_wrapper.get_right_mouse_click(mouse_click_pos))
                     on_mouse_right_click(mouse_click_pos);
-
-                _opengl_wrapper.render_call(_engine.get_data());
-                _opengl_wrapper.swap_buffers();
                 _opengl_wrapper.poll_events();
+                auto frame_end = std::chrono::high_resolution_clock::now();
+                if (lock_framerate != 0) {                                      // lock_frame = 0: unlimited
+                    auto frame_duration = std::chrono::duration_cast<std::chrono::microseconds>
+                            (frame_end - frame_start).count();
+                    if (frame_duration < 1000000 / lock_framerate) {
+                        std::this_thread::sleep_for(std::chrono::microseconds
+                                (math_utils::sleep_time_corrected(lock_framerate, frame_duration)));
+                    }
+                }
                 counter += 1;
             }
             _opengl_wrapper.destroy();
@@ -88,9 +113,9 @@ namespace visualime {
             _mutex.unlock();
         }
 
-        void launch(bool show_fps = false) {
+        void launch(bool show_fps = false, bool show_performance = false, unsigned int lock_framerate = 60) {
             _running = true;
-            _run_thread = std::thread(&scene2d::run, this, show_fps);
+            _run_thread = std::thread(&scene2d::run, this, show_fps, show_performance, lock_framerate);
         }
 
         [[nodiscard]] bool is_running() const {
@@ -179,14 +204,14 @@ namespace visualime {
         unsigned int _width;
         unsigned int _height;
         std::vector<std::shared_ptr<primitive::primitive_base>> _primitives;
-        engine::simple_engine _engine;
-        opengl_wrapper::simple_opengl_wrapper _opengl_wrapper;
+        opengl_wrapper::simple_opengl_wrapper _opengl_wrapper;              // declare before _engine, for .get_data()
+        engine::orthogonal_engine _engine;
         bool _scene_changed = false;
         bool _running = false;
         std::thread _run_thread;
         std::mutex _mutex;
         double super_sampling_ratio = 1;
-        std::shared_ptr<canvas::fullscreen_canvas> _background_canvas;
+        std::shared_ptr<canvas::fullscreen_orthogonal_canvas> _background_canvas;
     };
 }
 #endif //VISUALIME_LIBRARY_H

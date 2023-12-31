@@ -13,10 +13,12 @@
 #include "math_utils.h"
 #include "scenes.h"
 #include "Shader.h"
+#include "renderer.h"
+#include "canvas.h"
 
 namespace visualime {
     void test_success_import() {
-        std::cout << "Hello, World from Visualime!" << std::endl;
+        std::cout << "[success import]Hello, World from Visualime!" << std::endl;
     }
 }
 

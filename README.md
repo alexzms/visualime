@@ -16,6 +16,7 @@ https://github.com/alexzms/learn_fluid)).
 - [x] OpenMP parallelization
 - [x] Primitive-based rendering(small optimization)
 - [x] Canvas System(Easily draw pixels directly on the screen)
+- [x] Lock Framerate
 
 ## TODO
 - [ ] Triangle primitive

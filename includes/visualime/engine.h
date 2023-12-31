@@ -22,12 +22,13 @@ namespace visualime::engine {
                             std::shared_ptr<canvas::canvas_base> background_canvas) = 0;
     };
 
-    class simple_engine: public engine_base {
-    public:
-        simple_engine(unsigned int width, unsigned int height, const math_utils::interval render_border = {0, 1}):
-                    _width(width), _height(height), _render_border(render_border),
+    class orthogonal_engine: public engine_base {
+    public:                                                      // depth in orthogonal engine is only for occlusion
+        orthogonal_engine(unsigned int width, unsigned int height,
+                          const math_utils::interval render_border = {0, 1}):
+                    _width(width), _height(height), _render_border(render_border), _external_data(false),
                     _renderer(width, height, render_border) {
-            std::cout << "Engine initialized (" << width << "x" << height <<")" << std::endl;
+            std::cout << "[orthogonal engine]Engine _initialized (" << width << "x" << height <<")" << std::endl;
             _data = new unsigned char[_width * _height * 3];
             _data_buffer = new unsigned char[_width * _height * 3];
             _depth = new float[_width * _height];
@@ -35,8 +36,20 @@ namespace visualime::engine {
             memset(_data_buffer, 0, _width * _height * 3 * sizeof(unsigned char));
             memset(_depth, 0, _width * _height * sizeof(float));
         }
-        ~simple_engine() override {
-            delete[] _data;
+        orthogonal_engine(unsigned int width, unsigned int height, unsigned char* data,
+                          const math_utils::interval render_border = {0, 1}):
+                _width(width), _height(height), _render_border(render_border), _external_data(true),
+                _renderer(width, height, render_border), _data(data) {
+            std::cout << "Engine _initialized (" << width << "x" << height <<")" << std::endl;
+//            _data = new unsigned char[_width * _height * 3];
+            _data_buffer = new unsigned char[_width * _height * 3];
+            _depth = new float[_width * _height];
+            memset(_data, 0, _width * _height * 3 * sizeof(unsigned char));
+            memset(_data_buffer, 0, _width * _height * 3 * sizeof(unsigned char));
+            memset(_depth, 0, _width * _height * sizeof(float));
+        }
+        ~orthogonal_engine() override {
+            if (!_external_data) delete[] _data;
             delete[] _data_buffer;
             delete[] _depth;
         }
@@ -50,10 +63,10 @@ namespace visualime::engine {
                 memcpy(_data, background_canvas->get_data(), _width * _height * 3 * sizeof(unsigned char));
             }
             memset(_depth, 0, _width * _height * sizeof(float));
-            _renderer.render(primitives, _data_buffer, _depth);
-            auto tmp = _data;                                           // swap buffer
-            _data = _data_buffer;
-            _data_buffer = tmp;
+            _renderer.render(primitives, _data, _depth);
+//            auto tmp = _data;                                           // swap buffer
+//            _data = _data_buffer;
+//            _data_buffer = tmp;
         }
 
         [[nodiscard]] unsigned int get_width() const { return _width; }
@@ -64,9 +77,14 @@ namespace visualime::engine {
         unsigned int _height;
         unsigned char* _data;
         unsigned char* _data_buffer;
-        renderer::simple_renderer _renderer;
+        bool _external_data;
+        renderer::orthogonal_renderer _renderer;
         math_utils::interval _render_border;
         float* _depth;
+    };
+
+    class perspective_engine: public engine_base {
+        // TODO
     };
 }
 
