@@ -1,7 +1,6 @@
-#include "visualime/scenes.h"
-
-#include "random"
-#include "glm/glm.hpp"
+#include <random>
+#define VISUALIME_USE_CUDA
+#include "visualime.h"
 
 static std::random_device rd;
 static std::mt19937 mt(rd());
@@ -20,10 +19,8 @@ void grammar_playground() {
 //    arr.emplace_back({1, 2, 3});                                              // std::initializer_list, no, no!
 }
 
-auto main() -> int {
-    std::cout << "Hello, World from Visualime!" << '\n';
-
-    visualime::scene2d test_scene(800, 800, 1.0, false);
+void scene2d_test() {
+    visualime::scene::scene2d test_scene(800, 800, 1.0, false);
     test_scene.add_circle_normalized();
     auto rectangle_ptr = std::make_shared<visualime::primitive::solid_rectangle>(glm::vec2{0.5, 0.5}, 0.1, 0.1, 0.3, random_color());
     auto circle_ptr = std::make_shared<visualime::primitive::solid_circle>(glm::vec2{0.5, 0.5}, 0.1, 0.3, random_color());
@@ -59,5 +56,36 @@ auto main() -> int {
         test_scene.get_run_thread().join();
     }
     std::cout << "Test scene finished" << std::endl;
+}
+
+void canvas_scene_cuda_2d_test() {
+    using namespace visualime;
+
+    scene::canvas_scene_cuda_2d scene{800, 800};
+    scene.launch(true, 60);
+
+    int incremental_color = 0;
+    while (scene.is_running()) {
+        CHECK_ERROR(cudaMemset(scene.get_d_ptr(), incremental_color, scene.get_d_ptr_size()));
+        incremental_color += 1;
+        if (incremental_color > 255) {
+            incremental_color = 0;
+        }
+        scene.refresh();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    if (scene.get_run_thread().joinable()) {
+        scene.get_run_thread().join();
+    }
+
+    std::cout << "Test canvas_scene_cuda_2d finished" << std::endl;
+}
+
+auto main() -> int {
+    std::cout << "Hello, World from Visualime!" << '\n';
+
+    canvas_scene_cuda_2d_test();
+
     return 0;
 }

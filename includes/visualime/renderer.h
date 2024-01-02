@@ -10,6 +10,7 @@
 #include "primitives.h"
 #include "math_utils.h"
 #include "omp.h"
+#include "iostream"
 
 namespace visualime::renderer {
 

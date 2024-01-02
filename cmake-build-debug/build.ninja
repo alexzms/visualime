@@ -49,19 +49,36 @@ cmake_ninja_workdir = E$:\ComputerGraphics\projects\visualime\cmake-build-debug\
 
 build cmake_object_order_depends_target_visualime: phony || CMakeFiles\visualime.dir
 
-build CMakeFiles\visualime.dir\src\library.cpp.obj: CXX_COMPILER__visualime_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\library.cpp || cmake_object_order_depends_target_visualime
+build CMakeFiles\visualime.dir\src\glad.c.obj: CXX_COMPILER__visualime_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\glad.c || cmake_object_order_depends_target_visualime
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi -openmp
-  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -IE:\ComputerGraphics\projects\visualime\includes
+  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include" -IE:\ComputerGraphics\projects\visualime\includes -IE:\ComputerGraphics\projects\visualime\includes\visualime
   OBJECT_DIR = CMakeFiles\visualime.dir
   OBJECT_FILE_DIR = CMakeFiles\visualime.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\visualime.dir\visualime.pdb
   TARGET_PDB = visualime.pdb
 
-build CMakeFiles\visualime.dir\src\glad.c.obj: C_COMPILER__visualime_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\glad.c || cmake_object_order_depends_target_visualime
-  FLAGS = /DWIN32 /D_WINDOWS /Ob0 /Od /RTC1 -MDd -Zi
-  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -IE:\ComputerGraphics\projects\visualime\includes
+build CMakeFiles\visualime.dir\src\cuda\cuda_opengl_wrapper.cu.obj: CUDA_COMPILER__visualime_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\cuda\cuda_opengl_wrapper.cu || cmake_object_order_depends_target_visualime
+  DEP_FILE = CMakeFiles\visualime.dir\src\cuda\cuda_opengl_wrapper.cu.obj.d
+  FLAGS = -D_WINDOWS -Xcompiler=" /EHsc" -Xcompiler=" -Ob0 -Od /RTC1" -std=c++20 "--generate-code=arch=compute_52,code=[compute_52,sm_52]" -Xcompiler=-MDd -Xcompiler=-Zi
+  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include" -IE:\ComputerGraphics\projects\visualime\includes -IE:\ComputerGraphics\projects\visualime\includes\visualime
+  OBJECT_DIR = CMakeFiles\visualime.dir
+  OBJECT_FILE_DIR = CMakeFiles\visualime.dir\src\cuda
+  TARGET_COMPILE_PDB = CMakeFiles\visualime.dir\visualime.pdb
+  TARGET_PDB = visualime.pdb
+
+build CMakeFiles\visualime.dir\src\Shader.cpp.obj: CXX_COMPILER__visualime_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\Shader.cpp || cmake_object_order_depends_target_visualime
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi -openmp
+  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include" -IE:\ComputerGraphics\projects\visualime\includes -IE:\ComputerGraphics\projects\visualime\includes\visualime
   OBJECT_DIR = CMakeFiles\visualime.dir
   OBJECT_FILE_DIR = CMakeFiles\visualime.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\visualime.dir\visualime.pdb
+  TARGET_PDB = visualime.pdb
+
+build CMakeFiles\visualime.dir\includes\visualime\visualime.h.obj: CXX_COMPILER__visualime_unscanned_Debug E$:\ComputerGraphics\projects\visualime\includes\visualime\visualime.h || cmake_object_order_depends_target_visualime
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi -openmp
+  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include" -IE:\ComputerGraphics\projects\visualime\includes -IE:\ComputerGraphics\projects\visualime\includes\visualime
+  OBJECT_DIR = CMakeFiles\visualime.dir
+  OBJECT_FILE_DIR = CMakeFiles\visualime.dir\includes\visualime
   TARGET_COMPILE_PDB = CMakeFiles\visualime.dir\visualime.pdb
   TARGET_PDB = visualime.pdb
 
@@ -73,7 +90,7 @@ build CMakeFiles\visualime.dir\src\glad.c.obj: C_COMPILER__visualime_unscanned_D
 #############################################
 # Link the static library visualime.lib
 
-build visualime.lib: CXX_STATIC_LIBRARY_LINKER__visualime_Debug CMakeFiles\visualime.dir\src\library.cpp.obj CMakeFiles\visualime.dir\src\glad.c.obj
+build visualime.lib: CXX_STATIC_LIBRARY_LINKER__visualime_Debug CMakeFiles\visualime.dir\src\glad.c.obj CMakeFiles\visualime.dir\src\cuda\cuda_opengl_wrapper.cu.obj CMakeFiles\visualime.dir\src\Shader.cpp.obj CMakeFiles\visualime.dir\includes\visualime\visualime.h.obj
   LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -MDd -Zi
   LINK_FLAGS = /machine:x64
   OBJECT_DIR = CMakeFiles\visualime.dir
@@ -92,22 +109,56 @@ build visualime.lib: CXX_STATIC_LIBRARY_LINKER__visualime_Debug CMakeFiles\visua
 
 build cmake_object_order_depends_target_unit_tests: phony || CMakeFiles\unit_tests.dir
 
-build CMakeFiles\unit_tests.dir\src\unit_test\test.cpp.obj: CXX_COMPILER__unit_tests_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\unit_test\test.cpp || cmake_object_order_depends_target_unit_tests
+build CMakeFiles\unit_tests.dir\src\glad.c.obj: CXX_COMPILER__unit_tests_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\glad.c || cmake_object_order_depends_target_unit_tests
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi -openmp
-  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -IE:\ComputerGraphics\projects\visualime\includes
-  OBJECT_DIR = CMakeFiles\unit_tests.dir
-  OBJECT_FILE_DIR = CMakeFiles\unit_tests.dir\src\unit_test
-  TARGET_COMPILE_PDB = CMakeFiles\unit_tests.dir\
-  TARGET_PDB = unit_tests.pdb
-
-build CMakeFiles\unit_tests.dir\src\glad.c.obj: C_COMPILER__unit_tests_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\glad.c || cmake_object_order_depends_target_unit_tests
-  FLAGS = /DWIN32 /D_WINDOWS /Ob0 /Od /RTC1 -MDd -Zi
-  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -IE:\ComputerGraphics\projects\visualime\includes
+  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include" -IE:\ComputerGraphics\projects\visualime\includes -IE:\ComputerGraphics\projects\visualime\includes\visualime
   OBJECT_DIR = CMakeFiles\unit_tests.dir
   OBJECT_FILE_DIR = CMakeFiles\unit_tests.dir\src
   TARGET_COMPILE_PDB = CMakeFiles\unit_tests.dir\
   TARGET_PDB = unit_tests.pdb
 
+build CMakeFiles\unit_tests.dir\src\unit_test\test.cpp.obj: CXX_COMPILER__unit_tests_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\unit_test\test.cpp || cmake_object_order_depends_target_unit_tests
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi -openmp
+  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include" -IE:\ComputerGraphics\projects\visualime\includes -IE:\ComputerGraphics\projects\visualime\includes\visualime
+  OBJECT_DIR = CMakeFiles\unit_tests.dir
+  OBJECT_FILE_DIR = CMakeFiles\unit_tests.dir\src\unit_test
+  TARGET_COMPILE_PDB = CMakeFiles\unit_tests.dir\
+  TARGET_PDB = unit_tests.pdb
+
+build CMakeFiles\unit_tests.dir\src\cuda\cuda_opengl_wrapper.cu.obj: CUDA_COMPILER__unit_tests_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\cuda\cuda_opengl_wrapper.cu || cmake_object_order_depends_target_unit_tests
+  DEP_FILE = CMakeFiles\unit_tests.dir\src\cuda\cuda_opengl_wrapper.cu.obj.d
+  FLAGS = -D_WINDOWS -Xcompiler=" /EHsc" -Xcompiler=" -Ob0 -Od /RTC1" -std=c++20 "--generate-code=arch=compute_52,code=[compute_52,sm_52]" -Xcompiler=-MDd -Xcompiler=-Zi
+  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include" -IE:\ComputerGraphics\projects\visualime\includes -IE:\ComputerGraphics\projects\visualime\includes\visualime
+  OBJECT_DIR = CMakeFiles\unit_tests.dir
+  OBJECT_FILE_DIR = CMakeFiles\unit_tests.dir\src\cuda
+  TARGET_COMPILE_PDB = CMakeFiles\unit_tests.dir\
+  TARGET_PDB = unit_tests.pdb
+
+build CMakeFiles\unit_tests.dir\src\Shader.cpp.obj: CXX_COMPILER__unit_tests_unscanned_Debug E$:\ComputerGraphics\projects\visualime\src\Shader.cpp || cmake_object_order_depends_target_unit_tests
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi -openmp
+  INCLUDES = -IE:\ComputerGraphics\libraries\OpenGL\includes -IE:\ComputerGraphics\libraries\Utilities\includes -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include" -IE:\ComputerGraphics\projects\visualime\includes -IE:\ComputerGraphics\projects\visualime\includes\visualime
+  OBJECT_DIR = CMakeFiles\unit_tests.dir
+  OBJECT_FILE_DIR = CMakeFiles\unit_tests.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\unit_tests.dir\
+  TARGET_PDB = unit_tests.pdb
+
+
+# =============================================================================
+# Device Link build statements for EXECUTABLE target unit_tests
+
+
+#############################################
+# Link the executable CMakeFiles\unit_tests.dir\cmake_device_link.obj
+
+build CMakeFiles\unit_tests.dir\cmake_device_link.obj: CXX_EXECUTABLE_DEVICE_LINKER__unit_tests_Debug CMakeFiles\unit_tests.dir\src\glad.c.obj CMakeFiles\unit_tests.dir\src\unit_test\test.cpp.obj CMakeFiles\unit_tests.dir\src\cuda\cuda_opengl_wrapper.cu.obj CMakeFiles\unit_tests.dir\src\Shader.cpp.obj
+  LANGUAGE_COMPILE_FLAGS = -D_WINDOWS -Xcompiler=" /EHsc" -Xcompiler=" -Ob0 -Od /RTC1" "--generate-code=arch=compute_52,code=[compute_52,sm_52]" -Xcompiler=-MDd -Xcompiler=-Zi
+  LINK_LIBRARIES = glfw3.lib opengl32.lib cudart.lib cudadevrt.lib cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_PATH = -LIBPATH:C:\PROGRA~1\NVIDIA~2\CUDA\v12.2\lib\x64
+  OBJECT_DIR = CMakeFiles\unit_tests.dir
+  TARGET_COMPILE_PDB = CMakeFiles\unit_tests.dir\
+  TARGET_FILE = CMakeFiles\unit_tests.dir\cmake_device_link.obj
+  TARGET_IMPLIB = unit_tests.lib
+  TARGET_PDB = unit_tests.pdb
 
 # =============================================================================
 # Link build statements for EXECUTABLE target unit_tests
@@ -116,11 +167,11 @@ build CMakeFiles\unit_tests.dir\src\glad.c.obj: C_COMPILER__unit_tests_unscanned
 #############################################
 # Link the executable unit_tests.exe
 
-build unit_tests.exe: CXX_EXECUTABLE_LINKER__unit_tests_Debug CMakeFiles\unit_tests.dir\src\unit_test\test.cpp.obj CMakeFiles\unit_tests.dir\src\glad.c.obj
+build unit_tests.exe: CXX_EXECUTABLE_LINKER__unit_tests_Debug CMakeFiles\unit_tests.dir\src\glad.c.obj CMakeFiles\unit_tests.dir\src\unit_test\test.cpp.obj CMakeFiles\unit_tests.dir\src\cuda\cuda_opengl_wrapper.cu.obj CMakeFiles\unit_tests.dir\src\Shader.cpp.obj CMakeFiles\unit_tests.dir\cmake_device_link.obj
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -MDd -Zi
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
-  LINK_LIBRARIES = glfw3.lib  opengl32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
-  LINK_PATH = -LIBPATH:E:\ComputerGraphics\libraries\OpenGL\lib   -LIBPATH:E:\ComputerGraphics\libraries\Utilities\lib
+  LINK_LIBRARIES = glfw3.lib  opengl32.lib  cudart.lib  cudadevrt.lib  cudart_static.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_PATH = -LIBPATH:C:\PROGRA~1\NVIDIA~2\CUDA\v12.2\lib\x64
   OBJECT_DIR = CMakeFiles\unit_tests.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -176,14 +227,14 @@ build all: phony visualime.lib unit_tests.exe
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeParseImplicitLinkInfo.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeRCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindOpenMP.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindPackageHandleStandardArgs.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindPackageMessage.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-Initialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\WindowsPaths.cmake CMakeCache.txt CMakeFiles\3.27.0\CMakeCCompiler.cmake CMakeFiles\3.27.0\CMakeCXXCompiler.cmake CMakeFiles\3.27.0\CMakeRCCompiler.cmake CMakeFiles\3.27.0\CMakeSystem.cmake E$:\ComputerGraphics\projects\visualime\CMakeLists.txt
+build build.ninja: RERUN_CMAKE | C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCUDAInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeParseImplicitLinkInfo.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeRCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\NVIDIA-CUDA.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindOpenMP.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindPackageHandleStandardArgs.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindPackageMessage.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-Initialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-NVIDIA-CUDA.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\WindowsPaths.cmake CMakeCache.txt CMakeFiles\3.27.0\CMakeCUDACompiler.cmake CMakeFiles\3.27.0\CMakeCXXCompiler.cmake CMakeFiles\3.27.0\CMakeRCCompiler.cmake CMakeFiles\3.27.0\CMakeSystem.cmake E$:\ComputerGraphics\projects\visualime\CMakeLists.txt
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeParseImplicitLinkInfo.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeRCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindOpenMP.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindPackageHandleStandardArgs.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindPackageMessage.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-Initialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\WindowsPaths.cmake CMakeCache.txt CMakeFiles\3.27.0\CMakeCCompiler.cmake CMakeFiles\3.27.0\CMakeCXXCompiler.cmake CMakeFiles\3.27.0\CMakeRCCompiler.cmake CMakeFiles\3.27.0\CMakeSystem.cmake E$:\ComputerGraphics\projects\visualime\CMakeLists.txt: phony
+build C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCUDAInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeParseImplicitLinkInfo.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeRCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Compiler\NVIDIA-CUDA.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindOpenMP.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindPackageHandleStandardArgs.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\FindPackageMessage.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-Initialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows-NVIDIA-CUDA.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\Windows.cmake C$:\Program$ Files\JetBrains\CLion$ 2023.2\bin\cmake\win\x64\share\cmake-3.27\Modules\Platform\WindowsPaths.cmake CMakeCache.txt CMakeFiles\3.27.0\CMakeCUDACompiler.cmake CMakeFiles\3.27.0\CMakeCXXCompiler.cmake CMakeFiles\3.27.0\CMakeRCCompiler.cmake CMakeFiles\3.27.0\CMakeSystem.cmake E$:\ComputerGraphics\projects\visualime\CMakeLists.txt: phony
 
 
 #############################################

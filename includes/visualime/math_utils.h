@@ -2,8 +2,8 @@
 // Created by alexzms on 2023/12/15.
 //
 
-#ifndef UNIT_TESTS_MATH_UTILS_H
-#define UNIT_TESTS_MATH_UTILS_H
+#ifndef VISUALIME_MATH_UTILS_H
+#define VISUALIME_MATH_UTILS_H
 
 #include <glm/glm.hpp>
 #include "limits"
@@ -112,4 +112,4 @@ namespace visualime::math_utils {
 }
 
 
-#endif //UNIT_TESTS_MATH_UTILS_H
+#endif //VISUALIME_MATH_UTILS_H

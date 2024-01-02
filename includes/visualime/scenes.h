@@ -1,7 +1,6 @@
 #ifndef VISUALIME_LIBRARY_H
 #define VISUALIME_LIBRARY_H
 
-#include <glad/glad.h>
 #include <mutex>
 #include "material.h"
 #include "primitives.h"
@@ -9,24 +8,24 @@
 #include "opengl_wrapper.h"
 #include "thread"
 #include <ctime>
+#include <functional>
 #include "glm/glm.hpp"
-#include "glm/gtx/string_cast.hpp"
 #include "canvas.h"
 #include "chrono"
+#include "cuda/cuda_opengl_wrapper.cuh"
 
-
-namespace visualime {
+namespace visualime::scene {
     class scene2d {
     public:
         std::function<void(const glm::vec2&)> on_mouse_left_click = [](const glm::vec2& pos){
-            std::cout << "[scene2d:default] left mouse clicked at " << glm::to_string(pos) << std::endl;
+            std::cout << "[scene2d:default] left mouse clicked at " << pos.x << ", " << pos.y << std::endl;
         };
         std::function<void(const glm::vec2&)> on_mouse_right_click = [](const glm::vec2& pos){
-            std::cout << "[scene2d:default] right mouse clicked at " << glm::to_string(pos) << std::endl;
+            std::cout << "[scene2d:default] right mouse clicked at " << pos.x << ", " << pos.y << std::endl;
         };
 
 
-        scene2d(unsigned int width, unsigned int height, double super_sampling_ratio = 1.0, bool fullscreen = false):
+        scene2d(GLsizei width, GLsizei height, double super_sampling_ratio = 1.0, bool fullscreen = false):
                 _width(width), _height(height),
                 _background_canvas(std::make_shared<canvas::fullscreen_orthogonal_canvas>
                                     (static_cast<unsigned>(width * super_sampling_ratio),
@@ -43,12 +42,8 @@ namespace visualime {
             }
         }
 
-        bool should_quit() {
-            return _opengl_wrapper.should_close();
-        }
-
         void run(bool show_fps = false, bool show_performance = false, unsigned int lock_framerate = 60) {
-            std::cout << "Calling run in scene2d" << std::endl;
+            std::cout << "[scene2d] calling run(start thread)" << std::endl;
             _opengl_wrapper.init();
             double _prev_time = glfwGetTime();
             unsigned counter = 0;
@@ -65,9 +60,9 @@ namespace visualime {
                 auto frame_start = std::chrono::high_resolution_clock::now();
                 _mutex.lock();
                 if (_scene_changed) {
+                    _scene_changed = false;
                     auto render_start = std::chrono::high_resolution_clock::now();
                     _engine.render(_primitives, _background_canvas);
-                    _scene_changed = false;
                     auto render_end = std::chrono::high_resolution_clock::now();
                     if (show_performance) {
                         std::cout << "[scene][performance] _engine.render(): "
@@ -93,7 +88,7 @@ namespace visualime {
                     on_mouse_right_click(mouse_click_pos);
                 _opengl_wrapper.poll_events();
                 auto frame_end = std::chrono::high_resolution_clock::now();
-                if (lock_framerate != 0) {                                      // lock_frame = 0: unlimited
+                if (lock_framerate > 0) {                                      // lock_frame <= 0: unlimited
                     auto frame_duration = std::chrono::duration_cast<std::chrono::microseconds>
                             (frame_end - frame_start).count();
                     if (frame_duration < 1000000 / lock_framerate) {
@@ -201,10 +196,10 @@ namespace visualime {
 
         [[nodiscard]] std::thread& get_run_thread() { return _run_thread; }
     private:
-        unsigned int _width;
-        unsigned int _height;
+        GLsizei _width;
+        GLsizei _height;
         std::vector<std::shared_ptr<primitive::primitive_base>> _primitives;
-        opengl_wrapper::simple_opengl_wrapper _opengl_wrapper;              // declare before _engine, for .get_data()
+        visualime::opengl_wrapper::simple_opengl_wrapper _opengl_wrapper;     // declare before _engine, for .get_data()
         engine::orthogonal_engine _engine;
         bool _scene_changed = false;
         bool _running = false;
@@ -213,5 +208,97 @@ namespace visualime {
         double super_sampling_ratio = 1;
         std::shared_ptr<canvas::fullscreen_orthogonal_canvas> _background_canvas;
     };
+
+#ifdef VISUALIME_USE_CUDA
+    class canvas_scene_cuda_2d {
+    public:
+        std::function<void(const glm::vec2&)> on_mouse_left_click = [](const glm::vec2& pos){
+            std::cout << "[canvas_scene_cuda_2d:default] left mouse clicked at " << pos.x << ", " << pos.y << std::endl;
+        };
+        std::function<void(const glm::vec2&)> on_mouse_right_click = [](const glm::vec2& pos){
+            std::cout << "[canvas_scene_cuda_2d:default] right mouse clicked at " << pos.x << ", " << pos.y << std::endl;
+        };
+
+        canvas_scene_cuda_2d(GLsizei width, GLsizei height, double super_sampling_ratio = 1.0, bool fullscreen = false):
+                _width(width), _height(height),
+                _opengl_wrapper(_width, _height, fullscreen, super_sampling_ratio) {}
+
+        [[nodiscard]] uchar3* get_d_ptr() const { return _opengl_wrapper.get_d_ptr(); }
+        [[nodiscard]] size_t get_d_ptr_size() const { return _opengl_wrapper.get_d_ptr_size(); }
+
+        void run(bool show_fps = false, unsigned int lock_framerate = 60) {
+            std::cout << "[canvas_scene_cuda_2d] calling run(start thread)" << std::endl;
+            _opengl_wrapper.init();
+            _running = true;
+            double _prev_time = glfwGetTime();
+            unsigned counter = 0;
+            glm::vec2 mouse_click_pos;
+            while (!_opengl_wrapper.should_close()) {
+                if (show_fps) {
+                    double _curr_time = glfwGetTime();
+                    if (_curr_time - _prev_time > 1) {
+                        std::cout << "FPS: " << counter << std::endl;
+                        counter = 0;
+                        _prev_time = _curr_time;
+                    }
+                }
+                auto frame_start = std::chrono::high_resolution_clock::now();
+                _mutex.lock();
+                if (_scene_changed) {                                       // memory is managed by _opengl_wrapper
+                    _opengl_wrapper.render_call();                          // we should change the _opengl_wrapper.get_d_ptr()
+                    _opengl_wrapper.swap_buffers();                         // on the outside, then call .refresh()
+                    _scene_changed = false;
+                }
+                _mutex.unlock();
+                if (_opengl_wrapper.get_left_mouse_click(mouse_click_pos))
+                    on_mouse_left_click(mouse_click_pos);
+
+                if (_opengl_wrapper.get_right_mouse_click(mouse_click_pos))
+                    on_mouse_right_click(mouse_click_pos);
+                _opengl_wrapper.poll_events();
+                auto frame_end = std::chrono::high_resolution_clock::now();
+                if (lock_framerate > 0) {                                     // lock_frame <= 0: unlimited
+                    auto frame_duration = std::chrono::duration_cast<std::chrono::microseconds>
+                            (frame_end - frame_start).count();
+                    if (frame_duration < 1000000 / lock_framerate) {
+                        std::this_thread::sleep_for(std::chrono::microseconds
+                                                            (math_utils::sleep_time_corrected(lock_framerate, frame_duration)));
+                    }
+                }
+                counter += 1;
+            }
+            _opengl_wrapper.destroy();
+            _running = false;
+        }
+
+
+        void refresh() {
+            _mutex.lock();
+            _scene_changed = true;
+            _mutex.unlock();
+        }
+
+        void launch(bool show_fps = false, unsigned int lock_framerate = 60) {
+            _run_thread = std::thread(&canvas_scene_cuda_2d::run, this, show_fps, lock_framerate);
+        }
+        [[nodiscard]] std::thread& get_run_thread() { return _run_thread; }
+        [[nodiscard]] bool is_running() const { return _running; }
+        void wait_for_running(unsigned int milliseconds = 100) const {
+            while (!_running) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+            }
+        }
+
+
+    private:
+        GLsizei _width;
+        GLsizei _height;
+        visualime::opengl_wrapper::cuda_opengl_wrapper _opengl_wrapper;
+        std::thread _run_thread;
+        std::mutex _mutex;
+        bool _running = false;
+        bool _scene_changed = false;
+    };
+#endif //VISUALIME_USE_CUDA
 }
 #endif //VISUALIME_LIBRARY_H

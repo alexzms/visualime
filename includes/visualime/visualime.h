@@ -2,8 +2,8 @@
 // Created by alexzms on 2023/12/16.
 //
 
-#ifndef UNIT_TESTS_VISUALIME_H
-#define UNIT_TESTS_VISUALIME_H
+#ifndef VISUALIME_VISUALIME_H
+#define VISUALIME_VISUALIME_H
 
 #include <glad/glad.h>
 #include "material.h"
@@ -12,9 +12,11 @@
 #include "opengl_wrapper.h"
 #include "math_utils.h"
 #include "scenes.h"
-#include "Shader.h"
 #include "renderer.h"
+#include "Shader.h"
 #include "canvas.h"
+#include "cuda/cuda_helpers.cuh"
+#include "cuda/cuda_opengl_wrapper.cuh"
 
 namespace visualime {
     void test_success_import() {
@@ -22,4 +24,4 @@ namespace visualime {
     }
 }
 
-#endif //UNIT_TESTS_VISUALIME_H
+#endif //VISUALIME_VISUALIME_H
